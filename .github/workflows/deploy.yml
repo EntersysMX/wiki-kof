@@ -29,16 +29,21 @@ jobs:
 
       - name: Deploy to server
         uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_ACTOR: ${{ github.actor }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: GHCR_TOKEN,GH_ACTOR,IMAGE,CONTAINER
           script: |
-            docker pull ${{ env.IMAGE }}:latest
-            docker stop ${{ env.CONTAINER }} 2>/dev/null || true
-            docker rm   ${{ env.CONTAINER }} 2>/dev/null || true
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GH_ACTOR" --password-stdin
+            docker pull $IMAGE:latest
+            docker stop $CONTAINER 2>/dev/null || true
+            docker rm   $CONTAINER 2>/dev/null || true
             docker run -d \
-              --name ${{ env.CONTAINER }} \
+              --name $CONTAINER \
               --network traefik_net \
               --restart unless-stopped \
               --label "traefik.enable=true" \
@@ -46,4 +51,4 @@ jobs:
               --label "traefik.http.routers.wiki-kof.entrypoints=websecure" \
               --label "traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt" \
               --label "traefik.http.services.wiki-kof.loadbalancer.server.port=80" \
-              ${{ env.IMAGE }}:latest
+              $IMAGE:latest
