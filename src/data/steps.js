@@ -1,0 +1,137 @@
+const YT = (id, idx) =>
+  `https://www.youtube.com/watch?v=${id}&list=PL8fOd8ZLdcVZJbKU4qHFf94MVRMjHC--p&index=${idx}`;
+
+export const STEPS = [
+  {
+    n: 1,
+    title: 'Documentación General',
+    short: 'El alta legal y de seguridad de tu empresa. Es el prerrequisito de todo lo demás.',
+    desc: 'Son los requisitos legales y de seguridad obligatorios que tu empresa carga una sola vez para su alta y validación ante FEMSA. Aunque el registro es único, debes mantener la información vigente desde el módulo de consulta para conservar el cumplimiento y poder operar en las instalaciones.',
+    warn: 'Sin la Documentación General completa no podrás dar de alta ningún proyecto ni gestionar más documentación en la plataforma. Es el prerrequisito indispensable para que tu empresa sea validada y autorizada para operar.',
+    info: 'El registro se hace una sola vez, pero la información debe mantenerse vigente y actualizada desde el módulo de consulta.',
+    docsLabel: 'Documentos requeridos',
+    docs: [
+      'Declaración Jurada',
+      'REPSE',
+      'Cédula de determinación de cuota (SUA)',
+      'Pago del SUA',
+      'Identificación del representante legal',
+      'Opinión de cumplimiento IMSS',
+      'Última declaración de Grado de Riesgo',
+    ],
+    resources: [
+      { type: 'pdf',   name: 'Manual: Documentación General',   url: 'https://drive.google.com/file/d/1sBIQhZTi6zmhuPUBTk4z_FGkIdMhJLSz/view' },
+      { type: 'video', name: 'Video: Documentación General',     url: YT('taCq6OkOwsA', 2), id: 'taCq6OkOwsA' },
+      { type: 'video', name: 'Video: Consulta y actualización',  url: YT('O9RJa_kuC2c', 3), id: 'O9RJa_kuC2c' },
+    ],
+  },
+  {
+    n: 2,
+    title: 'Alta de Proyecto',
+    short: 'Registra cada trabajo antes de ejecutarlo, con su Orden de Compra o Servicio.',
+    desc: 'Es el registro inicial obligatorio de cada trabajo en la plataforma: detalla la actividad específica y sus riesgos, y detona el proceso de validación. Su objetivo es asegurar que el trabajo cumpla los estándares de seguridad y proteger la operación antes de autorizar su ejecución.',
+    warn: 'Si no adjuntas la evidencia de la Orden de Compra o de Servicio (imagen o documento) al momento del registro, tu proyecto no podrá validarse ni avanzar.',
+    info: 'Si el trabajo es una garantía, registra la Orden de Compra con el sufijo _G. Ejemplo: XXXXXXX_G.',
+    docsLabel: 'Documentos requeridos',
+    docs: [
+      'Evidencia de la Orden de Compra o de Servicio (imagen o documento)',
+    ],
+    resources: [
+      { type: 'pdf',   name: 'Manual: Alta de Proyecto',   url: 'https://drive.google.com/file/d/1YzQI_Pf6OpTVe1fhRBIq7uMsqSJrVNky/view' },
+      { type: 'video', name: 'Video: Alta de Proyecto',    url: YT('GcGVEcU6BwY', 4), id: 'GcGVEcU6BwY' },
+    ],
+  },
+  {
+    n: 3,
+    title: 'Listado de Personal',
+    short: 'Da de alta a tus trabajadores y asócialos al proyecto para que puedan entrar.',
+    desc: 'Es el registro de tus trabajadores, sus competencias (DC-3) y su estado de salud, para demostrar su aptitud técnica y legal. Asociarlos a un proyecto es la única vía para que el Técnico de Seguridad vea su información, valide el cumplimiento y autorice su acceso.',
+    warn: 'Tras el registro inicial es obligatorio asociar a los colaboradores al proyecto. Si omites la asociación, el Técnico de Seguridad no podrá ver la información de tu personal ni validarla, y no podrán ingresar.',
+    info: 'Mantener la documentación vigente (por ejemplo, el IMSS) es tu responsabilidad: de eso depende que cada colaborador conserve el estatus «Apto».',
+    docsLabel: 'Documentos requeridos por colaborador',
+    docs: [
+      'DC-3',
+      'Pago de Seguridad Social',
+      'Comprobante de domicilio',
+      'Credencial de la empresa contratista',
+      'Certificado médico / estudios clínicos',
+      'Antidoping',
+    ],
+    resources: [
+      { type: 'pdf',   name: 'Manual: Listado de Personal',            url: 'https://drive.google.com/file/d/1AWz4LG6HOuJOLFJYsTYmXNBoMCsG6H_o/view' },
+      { type: 'video', name: 'Video: Listado de Personal',             url: YT('q9p7v_QiL_s', 5), id: 'q9p7v_QiL_s' },
+      { type: 'video', name: 'Video: Asociar colaboradores al proyecto', url: YT('W-AdqZJ8XuM', 6), id: 'W-AdqZJ8XuM' },
+    ],
+  },
+  {
+    n: 4,
+    title: 'Alcance / Procedimiento Operativo',
+    short: 'Describe el trabajo paso a paso: esta información alimenta la Matriz IPERC.',
+    desc: 'Es la descripción detallada del trabajo que vas a realizar: el alcance y el procedimiento operativo paso a paso, acompañados de evidencia fotográfica del área. Lo que registres aquí alimenta directamente la Matriz IPERC del paso 5, así que debe ser puntual, claro y en orden lógico.',
+    warn: 'Si los pasos de la actividad no se describen correctamente y en orden lógico, no será posible evaluar los riesgos (IPERC) ni validar tu procedimiento.',
+    info: 'El Procedimiento Operativo es en formato libre y no es el AST: el AST se genera después, a partir del IPERC aprobado.',
+    docsLabel: 'Documentos requeridos',
+    docs: [
+      'Evidencia fotográfica del área de trabajo',
+      'Procedimiento Operativo en formato libre (no es el AST)',
+    ],
+    resources: [
+      { type: 'pdf',   name: 'Manual: Alcance y Procedimiento Operativo', url: 'https://drive.google.com/file/d/1n2yMzAJHDwswIy4k1dto13B49q30HTwZ/view' },
+      { type: 'video', name: 'Video: Alcance / Procedimiento Operativo',  url: YT('DB0poqi-gVA', 7), id: 'DB0poqi-gVA' },
+      { type: 'video', name: 'Video: Actualización y consulta',           url: YT('CORVpZmIPYM', 8), id: 'CORVpZmIPYM' },
+    ],
+  },
+  {
+    n: 5,
+    title: 'Análisis de Riesgos IPERC',
+    short: 'Evalúa los riesgos de cada actividad. Su aprobación genera el AST.',
+    desc: 'Es la identificación de peligros, evaluación de riesgos y definición de controles para cada actividad registrada en el Alcance. Su aprobación genera automáticamente el AST y autoriza la ejecución segura del trabajo bajo la supervisión del Técnico.',
+    warn: 'Sin el IPERC aprobado no se genera el AST y el trabajo no puede autorizarse. El sistema también valida que el personal asignado tenga las competencias y la documentación requeridas para cada tipo de actividad.',
+    info: '',
+    docsLabel: 'Lo que debes completar',
+    docs: [
+      'Identificación de la actividad: selecciona la clasificación correcta del trabajo (en caliente, alturas, manejo de herramientas…) y describe el paso a paso en orden lógico',
+      'Análisis de riesgos: identifica los peligros de cada paso, evalúa probabilidad, exposición y consecuencia, y define controles específicos',
+      'Asignación de personal: registra a los responsables de cada tarea; el sistema valida sus competencias y documentación',
+    ],
+    resources: [
+      { type: 'pdf',   name: 'Manual: Análisis de Riesgos IPERC', url: 'https://drive.google.com/file/d/12CFy6Do719QnHtlvLskLYNk6t97rphHs/view' },
+      { type: 'video', name: 'Video: Matriz IPERC',                url: YT('HFU5EzbRy7o', 9), id: 'HFU5EzbRy7o' },
+    ],
+  },
+  {
+    n: 6,
+    title: 'Plan de Rescate',
+    short: 'Define cómo responderás ante una emergencia en trabajos de alto riesgo.',
+    desc: 'Es el documento que define los protocolos, recursos y acciones específicas a ejecutar ante una emergencia en trabajos de alto riesgo. Garantiza una respuesta planificada ante incidentes y valida la preparación crítica en el sitio de trabajo.',
+    warn: 'Sin Plan de Rescate el proyecto no puede aprobarse: es un requisito indispensable que valida el cumplimiento normativo y la preparación ante emergencias.',
+    info: '',
+    docsLabel: 'Documentos requeridos',
+    docs: [
+      'Plan de Rescate en formato libre, con todos los procedimientos y medidas a tomar en caso de emergencia',
+    ],
+    resources: [
+      { type: 'pdf',   name: 'Manual: Plan de Rescate',        url: 'https://drive.google.com/file/d/1YX8vH_tZg77MKRITpTuVx7Bb3jakPFH3/view' },
+      { type: 'video', name: 'Video: Plan de Rescate',         url: YT('C5ZzssfDs74', 10), id: 'C5ZzssfDs74' },
+      { type: 'video', name: 'Video: Actualización y consulta', url: YT('Qq-GfJneDNo', 11), id: 'Qq-GfJneDNo' },
+    ],
+  },
+  {
+    n: 7,
+    title: 'Permisos de Trabajo',
+    short: 'Cada día de trabajo: carga el permiso firmado por KOF antes de iniciar labores.',
+    badge: 'Recurrente: cada día de trabajo',
+    desc: 'Es el registro diario obligatorio donde cargas el formato de permiso firmado y la documentación complementaria para autorizar las actividades del día. El Técnico FEMSA valida las condiciones de seguridad antes de que inicien las labores.',
+    warn: 'Debes registrar en la plataforma todos los Permisos de Trabajo que KOF otorgue cada día de ejecución. Recabar la evidencia digital (fotografía o escaneo del formato firmado) y cargarla es tu responsabilidad exclusiva: sin ella, las labores no quedan autorizadas.',
+    info: '',
+    docsLabel: 'Qué debes cargar cada día',
+    docs: [
+      'Formato de Permiso de Trabajo firmado (fotografía o escaneo)',
+      'Documentación complementaria del permiso',
+    ],
+    resources: [
+      { type: 'pdf',   name: 'Manual: Permisos de Trabajo',  url: 'https://drive.google.com/file/d/1hxdk-JNP6qLBBnIaJq8KbPcNJ6y2JONv/view' },
+      { type: 'video', name: 'Video: Permisos de Trabajo',   url: YT('usvORZPq9Dg', 12), id: 'usvORZPq9Dg' },
+    ],
+  },
+];

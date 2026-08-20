@@ -1,0 +1,54 @@
+name: Deploy wiki-kof
+
+on:
+  push:
+    branches: [main]
+
+env:
+  IMAGE: ghcr.io/entersysmx/wiki-kof
+  CONTAINER: wiki-kof
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE }}:latest
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            docker pull ${{ env.IMAGE }}:latest
+            docker stop ${{ env.CONTAINER }} 2>/dev/null || true
+            docker rm   ${{ env.CONTAINER }} 2>/dev/null || true
+            docker run -d \
+              --name ${{ env.CONTAINER }} \
+              --network traefik_net \
+              --restart unless-stopped \
+              --label "traefik.enable=true" \
+              --label "traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)" \
+              --label "traefik.http.routers.wiki-kof.entrypoints=websecure" \
+              --label "traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt" \
+              --label "traefik.http.services.wiki-kof.loadbalancer.server.port=80" \
+              ${{ env.IMAGE }}:latest
