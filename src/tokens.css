@@ -8,90 +8,40 @@
 :root {
   /* Brand core */
   --ent-teal:       #009ca6;
-  --ent-teal-deep:  #093d53;
+  --ent-teal-dark:  #008089;
+  --ent-teal-deep:  #00646b;
   --ent-navy:       #1c2838;
-  --ent-gold:       #c2a56d;
+  --ent-navy-mid:   #26374b;
   --ent-slate:      #7c878e;
-  --ent-paper:      #fafafa;
+  --ent-gold:       #c2a56d;
+  --ent-gold-soft:  #dcc9a1;
 
-  /* Teal ramp */
-  --ent-teal-50:  #e6f5f6;
-  --ent-teal-100: #b9e3e6;
-  --ent-teal-200: #7fccd1;
-  --ent-teal-300: #45b4bb;
-  --ent-teal-400: #1aa4ac;
-  --ent-teal-500: #009ca6;
-  --ent-teal-600: #008089;
-  --ent-teal-700: #00646b;
-  --ent-teal-800: #004a50;
-
-  /* Navy ramp */
-  --ent-navy-900: #131c28;
-  --ent-navy-800: #1c2838;
-  --ent-navy-700: #26374b;
-  --ent-navy-600: #093d53;
-  --ent-navy-500: #16506a;
-
-  /* Neutral ramp */
-  --ent-neutral-0:   #ffffff;
-  --ent-neutral-50:  #fafafa;
-  --ent-neutral-100: #f1f3f4;
-  --ent-neutral-200: #e2e6e8;
-  --ent-neutral-300: #cdd4d7;
-  --ent-neutral-400: #a7b1b6;
-  --ent-neutral-500: #7c878e;
-  --ent-neutral-600: #5f696f;
-  --ent-neutral-700: #454d52;
-  --ent-neutral-800: #2e3438;
-  --ent-neutral-900: #1a1e21;
-
-  /* Gold ramp */
-  --ent-gold-100: #f2ead9;
-  --ent-gold-300: #dcc9a1;
-  --ent-gold-500: #c2a56d;
-  --ent-gold-700: #a4863f;
-
-  /* Semantic status */
-  --ent-success: #2f9e6f;
-  --ent-warning: #d69b2f;
-  --ent-danger:  #c8503f;
+  /* Semantic text */
+  --text-strong:    #1c2838;
+  --text-body:      #454d52;
+  --text-muted:     #5f696f;
+  --text-subtle:    #7c878e;
+  --text-disabled:  #a7b1b6;
 
   /* Surfaces */
-  --surface-page:        var(--ent-neutral-50);
-  --surface-card:        var(--ent-neutral-0);
-  --surface-muted:       var(--ent-neutral-100);
-  --surface-inverse:     var(--ent-navy-800);
-  --surface-inverse-alt: var(--ent-navy-600);
-  --surface-brand:       var(--ent-teal-500);
-
-  /* Text */
-  --text-strong:   var(--ent-navy-800);
-  --text-body:     var(--ent-neutral-700);
-  --text-muted:    var(--ent-neutral-500);
-  --text-on-dark:  var(--ent-neutral-50);
-  --text-on-brand: #ffffff;
-  --text-accent:   var(--ent-teal-600);
-  --text-value:    var(--ent-gold-700);
-
-  /* Borders */
-  --border-subtle:  var(--ent-neutral-200);
-  --border-default: var(--ent-neutral-300);
-  --border-brand:   var(--ent-teal-500);
-
-  /* Interactive */
-  --action-bg:        var(--ent-teal-500);
-  --action-bg-hover:  var(--ent-teal-600);
-  --action-bg-active: var(--ent-teal-700);
-  --action-text:      #ffffff;
-  --focus-ring:       var(--ent-teal-300);
+  --surface-page:   #fafafa;
+  --surface-card:   #ffffff;
+  --surface-raised: #f1f3f4;
+  --surface-border: #e2e6e8;
+  --surface-border-light: #cdd4d7;
 
   /* Links */
-  --link-color:       var(--ent-teal-600);
-  --link-color-hover: var(--ent-teal-700);
+  --link-color:       #008089;
+  --link-color-hover: #00646b;
 
-  /* Typography */
-  --font-title: "Titillium Web", "Segoe UI", system-ui, sans-serif;
-  --font-body:  "Inter", system-ui, -apple-system, sans-serif;
+  /* Focus ring */
+  --focus-ring: #009ca6;
+
+  /* Fonts */
+  --font-title: 'Titillium Web', sans-serif;
+  --font-body:  'Inter', sans-serif;
+
+  /* Font weights */
   --fw-light:    300;
   --fw-regular:  400;
   --fw-medium:   500;
@@ -169,5 +119,57 @@ button { font-family: inherit; cursor: pointer; }
   user-select: none;
 }
 
+/* ── Header: nombre del portal ───────────────────────────── */
+.header-portal-name {
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1c2838;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ── Ayuda desktop / FAB móvil ───────────────────────────── */
+.header-ayuda-desktop { display: flex; }
+
+.header-ayuda-fab {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 16px;
+  z-index: 100;
+  align-items: center;
+  gap: 6px;
+  background: #009ca6;
+  color: #ffffff;
+  font-weight: 700;
+  font-family: 'Titillium Web', sans-serif;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0, 156, 166, 0.35);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.header-ayuda-fab:hover {
+  background: #008089;
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 156, 166, 0.45);
+  transform: translateY(-2px);
+}
+
+/* ── Responsive: tablet y móvil (≤ 768px) ───────────────── */
+@media (max-width: 768px) {
+  .header-portal-name {
+    font-size: clamp(11px, 2.8vw, 13px);
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  .header-ayuda-desktop { display: none; }
+
+  .header-ayuda-fab { display: flex; }
+}
+
 /* v2 */
-:root{--build:2;}
+:root{--build:3;}
