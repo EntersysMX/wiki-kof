@@ -16,7 +16,7 @@ export default function HelpSection() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
           {/* WhatsApp */}
           <a
-            href="https://wa.me/5215500000000"
+            href="https://wa.me/525625683662"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -42,7 +42,7 @@ export default function HelpSection() {
                 WhatsApp
               </span>
               <span style={{ display: 'block', fontSize: 13, color: '#5f696f', lineHeight: 1.5 }}>
-                Soporte directo con el equipo Entersys. Respuesta en horario laboral.
+                +52 56 2568 3662 — Soporte directo con el equipo Entersys. Respuesta en horario laboral.
               </span>
             </span>
           </a>
