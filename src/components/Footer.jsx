@@ -1,3 +1,5 @@
+import entersysLogo from '../assets/entersys-logo.png';
+
 export default function Footer({ fechaRevision }) {
   return (
     <footer style={{
@@ -11,7 +13,7 @@ export default function Footer({ fechaRevision }) {
         alignItems: 'center', justifyContent: 'space-between',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <img src="/entersys-logo.png" alt="Entersys" style={{ height: 22, filter: 'brightness(0) invert(0.6)', display: 'block' }} />
+          <img src={entersysLogo} alt="Entersys" style={{ height: 22, filter: 'brightness(0) invert(0.6)', display: 'block' }} />
           <span style={{ display: 'inline-block', width: 1, height: 18, background: 'rgba(255,255,255,0.12)' }} />
           <span style={{ fontSize: 13 }}>Portal de contratistas KOF</span>
         </div>

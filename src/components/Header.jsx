@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import entersysLogo from '../assets/entersys-logo.png';
 
 export default function Header({ onGoHome, q, onQ }) {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function Header({ onGoHome, q, onQ }) {
           aria-label="Inicio — Portal de contratistas KOF"
           style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', minHeight: 44 }}
         >
-          <img src="/entersys-logo.png" alt="Entersys" style={{ height: 26, display: 'block' }} />
+          <img src={entersysLogo} alt="Entersys" style={{ height: 26, display: 'block' }} />
         </a>
         <span style={{ display: 'inline-block', width: 1, height: 22, background: '#e2e6e8' }} />
         <span style={{
