@@ -50,5 +50,7 @@ jobs:
               --label "traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)" \
               --label "traefik.http.routers.wiki-kof.entrypoints=websecure" \
               --label "traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt" \
+              --label "traefik.http.routers.wiki-kof.middlewares=wiki-kof-strip" \
+              --label "traefik.http.middlewares.wiki-kof-strip.stripprefix.prefixes=/es/kof" \
               --label "traefik.http.services.wiki-kof.loadbalancer.server.port=80" \
               $IMAGE:latest
