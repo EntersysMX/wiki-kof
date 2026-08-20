@@ -44,7 +44,7 @@ jobs:
             docker rm   $CONTAINER 2>/dev/null || true
             docker run -d \
               --name $CONTAINER \
-              --network traefik_net \
+              --network traefik \
               --restart unless-stopped \
               --label "traefik.enable=true" \
               --label "traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)" \
