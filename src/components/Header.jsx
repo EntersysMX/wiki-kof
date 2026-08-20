@@ -40,7 +40,6 @@ export default function Header({ onGoHome, q, onQ }) {
 
           <span style={{ flex: 1 }} />
 
-          {/* Search button — always visible */}
           <button
             onClick={toggleSearch}
             aria-label="Buscar un paso"
@@ -59,17 +58,10 @@ export default function Header({ onGoHome, q, onQ }) {
             </span>
           </button>
 
-          {/* Ayuda — solo en desktop */}
+          {/* Ayuda — sin display inline para que el CSS media query lo controle */}
           <a
             href="#ayuda"
             className="header-ayuda-desktop"
-            style={{
-              flexShrink: 0,
-              display: 'flex', alignItems: 'center', gap: 6,
-              minHeight: 44, padding: '0 12px', borderRadius: 8,
-              textDecoration: 'none', color: '#008089', fontWeight: 600, fontSize: 14,
-              transition: 'background var(--dur-base)',
-            }}
             onMouseEnter={e => { e.currentTarget.style.background = '#e6f5f6'; e.currentTarget.style.color = '#00646b'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#008089'; }}
           >

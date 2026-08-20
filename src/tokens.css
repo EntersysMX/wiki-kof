@@ -129,9 +129,28 @@ button { font-family: inherit; cursor: pointer; }
   white-space: nowrap;
 }
 
-/* ── Ayuda desktop / FAB móvil ───────────────────────────── */
-.header-ayuda-desktop { display: flex; }
+/* ── Ayuda desktop ───────────────────────────────────────── */
+.header-ayuda-desktop {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #008089;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+.header-ayuda-desktop:hover {
+  background: #e6f5f6;
+  color: #00646b;
+  text-decoration: none;
+}
 
+/* ── Ayuda FAB ───────────────────────────────────────────── */
 .header-ayuda-fab {
   display: none;
   position: fixed;
@@ -166,10 +185,10 @@ button { font-family: inherit; cursor: pointer; }
     line-height: 1.25;
   }
 
-  .header-ayuda-desktop { display: none; }
+  .header-ayuda-desktop { display: none !important; }
 
   .header-ayuda-fab { display: flex; }
 }
 
 /* v2 */
-:root{--build:3;}
+:root{--build:4;}
