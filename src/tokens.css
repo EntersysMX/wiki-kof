@@ -168,3 +168,6 @@ button { font-family: inherit; cursor: pointer; }
   line-height: 1;
   user-select: none;
 }
+
+/* v2 */
+:root{--build:2;}
