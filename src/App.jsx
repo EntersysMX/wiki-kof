@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import StepList from './components/StepList';
@@ -19,13 +19,11 @@ function loadDocs() {
 }
 
 export default function App() {
-  const [view, setView] = useState('home');      // 'home' | 'step'
+  const [view, setView] = useState('home');
   const [stepN, setStepN] = useState(null);
   const [seen, setSeen] = useState(loadSeen);
   const [docs, setDocs] = useState(loadDocs);
   const [q, setQ] = useState('');
-
-  const topRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem(LS_SEEN, JSON.stringify(seen));
@@ -58,7 +56,6 @@ export default function App() {
   }
 
   function handleStart() {
-    // Scroll to first pending step or first step
     const firstPending = STEPS.find(s => {
       const dc = s.docs.reduce((acc, _, i) => acc + (docs[`${s.n}-${i}`] ? 1 : 0), 0);
       return dc < s.docs.length;
@@ -71,17 +68,16 @@ export default function App() {
   }
 
   if (view === 'step' && stepN) {
-    const step = STEPS.find(s => s.n === stepN);
     return (
       <>
         <Header onGoHome={goHome} q={q} onQ={setQ} />
         <StepDetail
-          step={step}
+          stepN={stepN}
           docs={docs}
           onToggleDoc={toggleDoc}
-          onGoBack={goHome}
-          onGoToStep={goToStep}
-          totalSteps={STEPS.length}
+          onGoHome={goHome}
+          onGoStep={goToStep}
+          fechaRevision={FECHA_REVISION}
         />
         <HelpSection />
         <Footer fechaRevision={FECHA_REVISION} />
