@@ -15,7 +15,7 @@ function getSessionId() {
   return id;
 }
 
-const WELCOME = '¡Hola! Soy la mascota de Entersys 🐾 ¿En qué paso del proceso de validación con KOF te puedo ayudar?';
+const WELCOME = '¡Hola! Soy Júpiter 🐾 ¿En qué paso del proceso de validación con KOF te puedo ayudar?';
 
 export default function MascotaWidget() {
   const [open, setOpen]       = useState(false);
@@ -105,7 +105,7 @@ export default function MascotaWidget() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 18 }}>🐾</span>
               <div>
-                <div style={{ color: '#fff', fontWeight: 700, fontSize: 13, lineHeight: 1.2 }}>Mascota Entersys</div>
+                <div style={{ color: '#fff', fontWeight: 700, fontSize: 13, lineHeight: 1.2 }}>Júpiter</div>
                 <div style={{ color: 'rgba(255,255,255,.75)', fontSize: 11 }}>Guía de validación KOF</div>
               </div>
             </div>
