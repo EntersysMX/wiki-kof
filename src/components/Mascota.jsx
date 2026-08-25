@@ -168,7 +168,7 @@ export default function Mascota({ size = 420, barkTick = 0, wagFast = false }) {
       </defs>
 
       {/* Shadow */}
-      <ellipse id={`${u}shadow`} cx="283" cy="460" rx="60" ry="6" fill={F('contact')}/>
+      <ellipse id={`${u}shadow`} cx="283" cy="460" rx="36" ry="5" fill={F('contact')}/>
 
       {/* Tail */}
       <g id={`${u}tail`}>
