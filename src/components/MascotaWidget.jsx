@@ -195,7 +195,7 @@ export default function MascotaWidget() {
         onMouseEnter={() => setWagFast(true)}
         onMouseLeave={() => setWagFast(false)}
         title={open ? 'Cerrar chat' : 'Abrir chat con la mascota'}
-        style={{ cursor: 'pointer', filter: 'drop-shadow(0 4px 20px rgba(0,0,0,.5))' }}
+        style={{ cursor: 'pointer' }}
       >
         <Mascota size={280} barkTick={barkTick} wagFast={wagFast} />
       </div>
