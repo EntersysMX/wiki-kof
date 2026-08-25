@@ -160,7 +160,7 @@ export default function Mascota({ size = 420, barkTick = 0, wagFast = false }) {
           <stop offset="100%" stopColor="#2c1408"/>
         </radialGradient>
         <radialGradient id={`${u}contact`} cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#8090a0" stopOpacity="0.35"/>
+          <stop offset="0%"   stopColor="#8090a0" stopOpacity="0.14"/>
           <stop offset="100%" stopColor="#8090a0" stopOpacity="0"/>
         </radialGradient>
         <clipPath id={`${u}clipEyeL`}><circle cx="232" cy="163" r="18"/></clipPath>
@@ -168,7 +168,7 @@ export default function Mascota({ size = 420, barkTick = 0, wagFast = false }) {
       </defs>
 
       {/* Shadow */}
-      <ellipse id={`${u}shadow`} cx="283" cy="460" rx="92" ry="14" fill={F('contact')}/>
+      <ellipse id={`${u}shadow`} cx="283" cy="460" rx="72" ry="9" fill={F('contact')}/>
 
       {/* Tail */}
       <g id={`${u}tail`}>
