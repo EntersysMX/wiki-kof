@@ -5,6 +5,7 @@ import StepList from './components/StepList';
 import StepDetail from './components/StepDetail';
 import HelpSection from './components/HelpSection';
 import Footer from './components/Footer';
+import MascotaWidget from './components/MascotaWidget';
 import { STEPS } from './data/steps';
 
 const FECHA_REVISION = 'julio 2025';
@@ -71,6 +72,7 @@ export default function App() {
     return (
       <>
         <Header onGoHome={goHome} q={q} onQ={setQ} />
+        <MascotaWidget />
         <StepDetail
           stepN={stepN}
           docs={docs}
@@ -98,6 +100,7 @@ export default function App() {
       />
       <HelpSection />
       <Footer fechaRevision={FECHA_REVISION} />
+      <MascotaWidget />
     </>
   );
 }
