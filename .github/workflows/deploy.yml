@@ -3,54 +3,35 @@ name: Deploy wiki-kof
 on:
   push:
     branches: [main]
-
-env:
-  IMAGE: ghcr.io/entersysmx/wiki-kof
-  CONTAINER: wiki-kof
+    paths-ignore:
+      - '.github/workflows/**'
+      - '**.md'
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+  deploy:
+    name: Deploy to Production
+    runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-
-      - name: Build Docker image
-        run: docker build -t $IMAGE:latest .
-
-      - name: Log in to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Push image to GHCR
-        run: docker push $IMAGE:latest
-
-      - name: Deploy to server
-        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262
-        env:
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_ACTOR: ${{ github.actor }}
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          envs: GHCR_TOKEN,GH_ACTOR,IMAGE,CONTAINER
-          script: |
-            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GH_ACTOR" --password-stdin
-            docker pull $IMAGE:latest
-            docker stop $CONTAINER 2>/dev/null || true
-            docker rm   $CONTAINER 2>/dev/null || true
-            docker run -d \
-              --name $CONTAINER \
-              --network traefik \
-              --restart unless-stopped \
-              --label "traefik.enable=true" \
-              --label "traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)" \
-              --label "traefik.http.routers.wiki-kof.entrypoints=websecure" \
-              --label "traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt" \
-              --label "traefik.http.routers.wiki-kof.middlewares=wiki-kof-strip" \
-              --label "traefik.http.middlewares.wiki-kof-strip.stripprefix.prefixes=/es/kof" \
-              --label "traefik.http.services.wiki-kof.loadbalancer.server.port=80" \
-              $IMAGE:latest
+      - name: Deploy
+        run: |
+          set -e
+          git -C /srv/wiki-kof fetch origin main
+          git -C /srv/wiki-kof reset --hard origin/main
+          docker build -t wiki-kof:latest /srv/wiki-kof
+          docker stop wiki-kof 2>/dev/null || true
+          docker rm   wiki-kof 2>/dev/null || true
+          docker run -d \
+            --name wiki-kof \
+            --network traefik \
+            --restart unless-stopped \
+            --label "traefik.enable=true" \
+            --label "traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)" \
+            --label "traefik.http.routers.wiki-kof.entrypoints=websecure" \
+            --label "traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt" \
+            --label "traefik.http.routers.wiki-kof.middlewares=wiki-kof-strip" \
+            --label "traefik.http.middlewares.wiki-kof-strip.stripprefix.prefixes=/es/kof" \
+            --label "traefik.http.services.wiki-kof.loadbalancer.server.port=80" \
+            wiki-kof:latest
+          docker image prune -f
