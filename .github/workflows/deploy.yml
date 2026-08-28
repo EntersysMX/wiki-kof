@@ -45,7 +45,7 @@ jobs:
             --name kof-mascot-api \
             --network traefik \
             --restart unless-stopped \
-            --env ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}" \
+            --env GEMINI_API_KEY="${GEMINI_API_KEY}" \
             --label "traefik.enable=true" \
             --label "traefik.http.routers.kof-mascot-api.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/kof-api\`)" \
             --label "traefik.http.routers.kof-mascot-api.entrypoints=websecure" \

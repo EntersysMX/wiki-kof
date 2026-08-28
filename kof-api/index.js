@@ -1,5 +1,5 @@
 import express from 'express';
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const app  = express();
 const PORT = process.env.PORT || 3100;
@@ -12,29 +12,6 @@ app.use((_req, res, next) => {
   next();
 });
 app.options('*', (_req, res) => res.sendStatus(204));
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
-// In-memory session store: sessionId -> Message[]
-// Bounded to 20 turns per session, cleaned up after 4 hours of inactivity
-const sessions = new Map();
-const SESSION_TTL_MS = 4 * 60 * 60 * 1000;
-
-function getSession(id) {
-  const now = Date.now();
-  const entry = sessions.get(id) ?? { messages: [], lastSeen: now };
-  entry.lastSeen = now;
-  sessions.set(id, entry);
-  return entry.messages;
-}
-
-// Purge stale sessions every 30 min
-setInterval(() => {
-  const cutoff = Date.now() - SESSION_TTL_MS;
-  for (const [id, entry] of sessions) {
-    if (entry.lastSeen < cutoff) sessions.delete(id);
-  }
-}, 30 * 60 * 1000);
 
 const SYSTEM = `Eres Júpiter 🐾, la mascota y guía oficial del portal wiki-kof de Entersys.
 Tu misión: ayudar a contratistas a completar los 7 pasos del proceso de validación para operar en plantas de Coca-Cola FEMSA (KOF).
@@ -86,6 +63,28 @@ Documentos: Formato de Permiso firmado (foto o escaneo), documentación compleme
 - Si está atascado, pregunta en qué paso está para orientarlo.
 - Si pregunta qué sigue, dile el paso siguiente y qué necesita preparar.`;
 
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// In-memory session store: sessionId -> { history: GeminiContent[], lastSeen: number }
+const sessions = new Map();
+const SESSION_TTL_MS = 4 * 60 * 60 * 1000;
+
+function getHistory(id) {
+  const now   = Date.now();
+  const entry = sessions.get(id) ?? { history: [], lastSeen: now };
+  entry.lastSeen = now;
+  sessions.set(id, entry);
+  return entry.history;
+}
+
+// Purge stale sessions every 30 min
+setInterval(() => {
+  const cutoff = Date.now() - SESSION_TTL_MS;
+  for (const [id, entry] of sessions) {
+    if (entry.lastSeen < cutoff) sessions.delete(id);
+  }
+}, 30 * 60 * 1000);
+
 app.post('/v1/chat/mascot', async (req, res) => {
   try {
     const { message, session_id } = req.body;
@@ -95,21 +94,22 @@ app.post('/v1/chat/mascot', async (req, res) => {
     }
 
     const sid     = session_id || 'anon';
-    const history = getSession(sid);
+    const history = getHistory(sid);
 
-    history.push({ role: 'user', content: message.slice(0, 1000) });
-
-    const response = await client.messages.create({
-      model:      'claude-haiku-4-5-20251001',
-      max_tokens: 350,
-      system:     SYSTEM,
-      messages:   history.slice(-16), // last 8 turns
+    const geminiModel = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash-exp',
+      systemInstruction: SYSTEM,
     });
 
-    const reply = response.content[0]?.text ?? 'No pude generar una respuesta.';
-    history.push({ role: 'assistant', content: reply });
+    const chat  = geminiModel.startChat({ history: history.slice(-16) });
+    const result = await chat.sendMessage(message.slice(0, 1000));
+    const reply  = result.response.text();
 
-    // Bound history to 20 messages
+    // Store turns in Gemini format
+    history.push({ role: 'user',  parts: [{ text: message.slice(0, 1000) }] });
+    history.push({ role: 'model', parts: [{ text: reply }] });
+
+    // Bound history to 20 messages (10 turns)
     if (history.length > 20) history.splice(0, 2);
 
     res.json({ reply, animation_state: 'talking', open_chat: false });
