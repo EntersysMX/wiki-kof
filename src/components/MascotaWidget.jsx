@@ -6,7 +6,7 @@ const API_URL     = 'https://wiki.entersys.mx/kof-api/v1/chat/mascot';
 const SITE_ORIGIN = 'wiki-kof';
 const SESSION_KEY = 'kof_mascot_session';
 
-const MASCOT_SIZE = 280;
+const MASCOT_SIZE = 196;
 const DRAG_THRESHOLD = 6; // px de movimiento para distinguir arrastre de click
 
 function getSessionId() {
