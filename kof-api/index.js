@@ -97,7 +97,7 @@ app.post('/v1/chat/mascot', async (req, res) => {
     const history = getHistory(sid);
 
     const geminiModel = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-3.6-flash',
       systemInstruction: SYSTEM,
     });
 
