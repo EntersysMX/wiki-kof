@@ -14,7 +14,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Deploy
+      - name: Deploy frontend
         run: |
           set -e
           git -C /srv/wiki-kof fetch origin main
@@ -34,4 +34,24 @@ jobs:
             --label "traefik.http.middlewares.wiki-kof-strip.stripprefix.prefixes=/es/kof" \
             --label "traefik.http.services.wiki-kof.loadbalancer.server.port=80" \
             wiki-kof:latest
+
+      - name: Deploy mascot API
+        run: |
+          set -e
+          docker build -t kof-mascot-api:latest /srv/wiki-kof/kof-api
+          docker stop kof-mascot-api 2>/dev/null || true
+          docker rm   kof-mascot-api 2>/dev/null || true
+          docker run -d \
+            --name kof-mascot-api \
+            --network traefik \
+            --restart unless-stopped \
+            --env ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}" \
+            --label "traefik.enable=true" \
+            --label "traefik.http.routers.kof-mascot-api.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/kof-api\`)" \
+            --label "traefik.http.routers.kof-mascot-api.entrypoints=websecure" \
+            --label "traefik.http.routers.kof-mascot-api.tls.certresolver=letsencrypt" \
+            --label "traefik.http.routers.kof-mascot-api.middlewares=kof-mascot-strip" \
+            --label "traefik.http.middlewares.kof-mascot-strip.stripprefix.prefixes=/kof-api" \
+            --label "traefik.http.services.kof-mascot-api.loadbalancer.server.port=3100" \
+            kof-mascot-api:latest
           docker image prune -f

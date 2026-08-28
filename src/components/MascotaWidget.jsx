@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Mascota from './Mascota';
 
-const API_URL     = 'https://api.scram2k.com/v1/chat/mascot';
+const API_URL     = 'https://wiki.entersys.mx/kof-api/v1/chat/mascot';
 const SITE_ORIGIN = 'wiki-kof';
 const SESSION_KEY = 'kof_mascot_session';
 
