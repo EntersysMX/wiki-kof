@@ -6,8 +6,12 @@ const API_URL     = 'https://wiki.entersys.mx/kof-api/v1/chat/mascot';
 const SITE_ORIGIN = 'wiki-kof';
 const SESSION_KEY = 'kof_mascot_session';
 
-const MASCOT_SIZE = 196;
+const MASCOT_SIZE_DESKTOP = 196;
+const MASCOT_SIZE_MOBILE  = 132;
+const MOBILE_BREAKPOINT   = 640; // px de ancho de viewport
 const DRAG_THRESHOLD = 6; // px de movimiento para distinguir arrastre de click
+
+const mascotSizeFor = width => (width <= MOBILE_BREAKPOINT ? MASCOT_SIZE_MOBILE : MASCOT_SIZE_DESKTOP);
 
 function getSessionId() {
   let id = sessionStorage.getItem(SESSION_KEY);
@@ -33,6 +37,7 @@ export default function MascotaWidget() {
   const [wagFast,  setWagFast]  = useState(false);
   const [pos, setPos]           = useState({ right: 24, bottom: 24 });
   const [dragging, setDragging] = useState(false);
+  const [vp, setVp]             = useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
   const bottomRef = useRef(null);
   const inputRef  = useRef(null);
   const sessionId = useRef(getSessionId());
@@ -51,9 +56,12 @@ export default function MascotaWidget() {
   // Mantener la mascota dentro del viewport si cambia el tamaño de la ventana
   useEffect(() => {
     function onResize() {
+      const w = window.innerWidth, h = window.innerHeight;
+      const size = mascotSizeFor(w);
+      setVp({ w, h });
       setPos(p => ({
-        right:  clamp(p.right,  8, window.innerWidth  - MASCOT_SIZE),
-        bottom: clamp(p.bottom, 8, window.innerHeight - MASCOT_SIZE),
+        right:  clamp(p.right,  8, w - size),
+        bottom: clamp(p.bottom, 8, h - size),
       }));
     }
     window.addEventListener('resize', onResize);
@@ -77,9 +85,10 @@ export default function MascotaWidget() {
     if (!d.moved && Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
     d.moved = true;
     setDragging(true);
+    const size = mascotSizeFor(window.innerWidth);
     setPos({
-      right:  clamp(d.startRight  - dx, 8, window.innerWidth  - MASCOT_SIZE),
-      bottom: clamp(d.startBottom - dy, 8, window.innerHeight - MASCOT_SIZE),
+      right:  clamp(d.startRight  - dx, 8, window.innerWidth  - size),
+      bottom: clamp(d.startBottom - dy, 8, window.innerHeight - size),
     });
   }
 
@@ -124,10 +133,11 @@ export default function MascotaWidget() {
   }
 
   // ── Geometría del panel según la posición de la mascota ──
-  const vw = typeof window !== 'undefined' ? window.innerWidth  : 1280;
-  const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
+  const vw = vp.w;
+  const vh = vp.h;
+  const mascotSize = mascotSizeFor(vw);
 
-  const mascotTop  = vh - pos.bottom - MASCOT_SIZE;
+  const mascotTop  = vh - pos.bottom - mascotSize;
   const spaceAbove = mascotTop - 20;
   const spaceBelow = pos.bottom - 20;
   // Si arriba no cabe un panel razonable y abajo hay más espacio, se abre hacia abajo
@@ -140,8 +150,8 @@ export default function MascotaWidget() {
   const msgsMaxH    = clamp(panelSpace - 110, 140, 340);
 
   const panelPosStyle = panelBelow
-    ? { top:    mascotTop + MASCOT_SIZE + 10, right: panelRight }
-    : { bottom: pos.bottom + MASCOT_SIZE + 10, right: panelRight };
+    ? { top:    mascotTop + mascotSize + 10, right: panelRight }
+    : { bottom: pos.bottom + mascotSize + 10, right: panelRight };
 
   return (
     <>
@@ -281,7 +291,7 @@ export default function MascotaWidget() {
           filter: 'drop-shadow(0 3px 8px rgba(0,0,0,.22))',
         }}
       >
-        <Mascota size={MASCOT_SIZE} barkTick={barkTick} wagFast={wagFast} />
+        <Mascota size={mascotSize} barkTick={barkTick} wagFast={wagFast} />
       </div>
     </>
   );
