@@ -6,6 +6,9 @@ const API_URL     = 'https://wiki.entersys.mx/kof-api/v1/chat/mascot';
 const SITE_ORIGIN = 'wiki-kof';
 const SESSION_KEY = 'kof_mascot_session';
 
+const MASCOT_SIZE = 280;
+const DRAG_THRESHOLD = 6; // px de movimiento para distinguir arrastre de click
+
 function getSessionId() {
   let id = sessionStorage.getItem(SESSION_KEY);
   if (!id) {
@@ -13,6 +16,10 @@ function getSessionId() {
     sessionStorage.setItem(SESSION_KEY, id);
   }
   return id;
+}
+
+function clamp(v, min, max) {
+  return Math.min(Math.max(v, min), Math.max(min, max));
 }
 
 const WELCOME = '¡Hola! Soy Júpiter 🐾 ¿En qué paso del proceso de validación con KOF te puedo ayudar?';
@@ -24,9 +31,12 @@ export default function MascotaWidget() {
   const [loading, setLoading] = useState(false);
   const [barkTick, setBarkTick] = useState(0);
   const [wagFast,  setWagFast]  = useState(false);
+  const [pos, setPos]           = useState({ right: 24, bottom: 24 });
+  const [dragging, setDragging] = useState(false);
   const bottomRef = useRef(null);
   const inputRef  = useRef(null);
   const sessionId = useRef(getSessionId());
+  const dragRef   = useRef(null);
 
   const bark = () => setBarkTick(t => t + 1);
 
@@ -38,9 +48,49 @@ export default function MascotaWidget() {
     if (open) setTimeout(() => inputRef.current?.focus(), 120);
   }, [open]);
 
-  function handleFabClick() {
-    bark();
-    setOpen(o => !o);
+  // Mantener la mascota dentro del viewport si cambia el tamaño de la ventana
+  useEffect(() => {
+    function onResize() {
+      setPos(p => ({
+        right:  clamp(p.right,  8, window.innerWidth  - MASCOT_SIZE),
+        bottom: clamp(p.bottom, 8, window.innerHeight - MASCOT_SIZE),
+      }));
+    }
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  function handlePointerDown(e) {
+    dragRef.current = {
+      startX: e.clientX, startY: e.clientY,
+      startRight: pos.right, startBottom: pos.bottom,
+      moved: false,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+
+  function handlePointerMove(e) {
+    const d = dragRef.current;
+    if (!d) return;
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    if (!d.moved && Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+    d.moved = true;
+    setDragging(true);
+    setPos({
+      right:  clamp(d.startRight  - dx, 8, window.innerWidth  - MASCOT_SIZE),
+      bottom: clamp(d.startBottom - dy, 8, window.innerHeight - MASCOT_SIZE),
+    });
+  }
+
+  function handlePointerUp() {
+    const d = dragRef.current;
+    dragRef.current = null;
+    setDragging(false);
+    if (d && !d.moved) {
+      bark();
+      setOpen(o => !o);
+    }
   }
 
   async function send() {
@@ -73,16 +123,36 @@ export default function MascotaWidget() {
     }
   }
 
-  return (
-    <div style={{
-      position: 'fixed', bottom: 24, right: 24, zIndex: 1000,
-      display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 10,
-    }}>
+  // ── Geometría del panel según la posición de la mascota ──
+  const vw = typeof window !== 'undefined' ? window.innerWidth  : 1280;
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
 
+  const mascotTop  = vh - pos.bottom - MASCOT_SIZE;
+  const spaceAbove = mascotTop - 20;
+  const spaceBelow = pos.bottom - 20;
+  // Si arriba no cabe un panel razonable y abajo hay más espacio, se abre hacia abajo
+  const panelBelow = spaceAbove < 300 && spaceBelow > spaceAbove;
+
+  const panelWidth  = Math.min(320, vw - 24);
+  const panelRight  = clamp(pos.right, 12, vw - panelWidth - 12);
+  const panelSpace  = Math.max(220, panelBelow ? spaceBelow : spaceAbove);
+  // Alto disponible para los mensajes: espacio del panel menos header (~46) e input (~56)
+  const msgsMaxH    = clamp(panelSpace - 110, 140, 340);
+
+  const panelPosStyle = panelBelow
+    ? { top:    mascotTop + MASCOT_SIZE + 10, right: panelRight }
+    : { bottom: pos.bottom + MASCOT_SIZE + 10, right: panelRight };
+
+  return (
+    <>
       {/* ── Panel de chat ───────────────────────────────────── */}
       {open && (
         <div style={{
-          width: 320, background: '#1c2838',
+          position: 'fixed', zIndex: 1001,
+          ...panelPosStyle,
+          width: panelWidth,
+          maxHeight: panelSpace,
+          background: '#1c2838',
           border: '1px solid rgba(0,156,166,.35)',
           borderRadius: 16,
           boxShadow: '0 12px 40px rgba(0,0,0,.55)',
@@ -101,6 +171,7 @@ export default function MascotaWidget() {
           <div style={{
             background: '#009ca6', padding: '11px 16px',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            flexShrink: 0,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 18 }}>🐾</span>
@@ -118,12 +189,12 @@ export default function MascotaWidget() {
 
           {/* Mensajes */}
           <div style={{
-            flex: 1, padding: '14px 14px 8px',
+            flex: 1, minHeight: 0, padding: '14px 14px 8px',
             display: 'flex', flexDirection: 'column', gap: 10,
-            maxHeight: 340, overflowY: 'auto',
+            maxHeight: msgsMaxH, overflowY: 'auto',
           }}>
             {msgs.map((m, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
+              <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start', flexShrink: 0 }}>
                 <div style={{
                   background: m.role === 'user' ? '#009ca6' : '#243448',
                   color: '#f0f4f8',
@@ -133,6 +204,8 @@ export default function MascotaWidget() {
                   fontSize: 13,
                   lineHeight: 1.55,
                   wordBreak: 'break-word',
+                  overflowWrap: 'break-word',
+                  whiteSpace: 'pre-wrap',
                 }}>
                   {m.text}
                 </div>
@@ -140,7 +213,7 @@ export default function MascotaWidget() {
             ))}
 
             {loading && (
-              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', flexShrink: 0 }}>
                 <div style={{
                   background: '#243448', color: '#6b8899',
                   borderRadius: '4px 16px 16px 16px',
@@ -156,6 +229,7 @@ export default function MascotaWidget() {
             padding: '10px 12px',
             borderTop: '1px solid rgba(255,255,255,.08)',
             display: 'flex', gap: 8, alignItems: 'center',
+            flexShrink: 0,
           }}>
             <input
               ref={inputRef}
@@ -165,7 +239,7 @@ export default function MascotaWidget() {
               placeholder="Escribe tu pregunta…"
               disabled={loading}
               style={{
-                flex: 1, background: '#243040',
+                flex: 1, minWidth: 0, background: '#243040',
                 border: '1px solid rgba(255,255,255,.12)',
                 color: '#f0f4f8', borderRadius: 10,
                 padding: '8px 12px', fontSize: 13, outline: 'none',
@@ -189,17 +263,26 @@ export default function MascotaWidget() {
         </div>
       )}
 
-      {/* ── Botón FAB: perrito ───────────────────────────────── */}
+      {/* ── Mascota arrastrable (click abre/cierra el chat) ──── */}
       <div
-        onClick={handleFabClick}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         onMouseEnter={() => setWagFast(true)}
         onMouseLeave={() => setWagFast(false)}
         title={open ? 'Cerrar chat' : 'Abrir chat con la mascota'}
-        style={{ cursor: 'pointer', filter: 'drop-shadow(0 3px 8px rgba(0,0,0,.22))' }}
+        style={{
+          position: 'fixed', zIndex: 1000,
+          right: pos.right, bottom: pos.bottom,
+          cursor: dragging ? 'grabbing' : 'grab',
+          touchAction: 'none',
+          userSelect: 'none',
+          filter: 'drop-shadow(0 3px 8px rgba(0,0,0,.22))',
+        }}
       >
-        <Mascota size={280} barkTick={barkTick} wagFast={wagFast} />
+        <Mascota size={MASCOT_SIZE} barkTick={barkTick} wagFast={wagFast} />
       </div>
-
-    </div>
+    </>
   );
 }
