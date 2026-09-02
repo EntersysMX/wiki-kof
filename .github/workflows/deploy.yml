@@ -1,3 +1,11 @@
+# ============================================================
+# Wiki KOF — Deploy a producción (Modelo B)
+# Build en la nube (ubuntu-latest) -> GHCR -> deploy por SSH.
+# Migrado desde runs-on: self-hosted el 2026-09-02 para retirar
+# el runner del servidor de producción.
+# OJO: la org EntersysMX exige SHA-pinning de las actions; usar tags
+# (@v4) hace que el run falle con 'startup_failure' sin crear jobs.
+# ============================================================
 name: Deploy wiki-kof
 
 on:
@@ -8,50 +16,134 @@ on:
       - '**.md'
   workflow_dispatch:
 
+env:
+  IMG_WEB: ghcr.io/entersysmx/wiki-kof
+  IMG_API: ghcr.io/entersysmx/kof-mascot-api
+
 jobs:
-  deploy:
-    name: Deploy to Production
-    runs-on: self-hosted
+  build:
+    name: Build & Push Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
 
     steps:
-      - name: Deploy frontend
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set image tag
+        id: tag
+        run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+
+      - name: Build & push frontend
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            ${{ env.IMG_WEB }}:${{ steps.tag.outputs.tag }}
+            ${{ env.IMG_WEB }}:latest
+
+      - name: Build & push mascot API
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: ./kof-api
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            ${{ env.IMG_API }}:${{ steps.tag.outputs.tag }}
+            ${{ env.IMG_API }}:latest
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Setup SSH
         run: |
-          set -e
-          git -C /srv/wiki-kof fetch origin main
-          git -C /srv/wiki-kof reset --hard origin/main
-          docker build -t wiki-kof:latest /srv/wiki-kof
-          docker stop wiki-kof 2>/dev/null || true
-          docker rm   wiki-kof 2>/dev/null || true
-          docker run -d \
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "SSHOPTS=-o StrictHostKeyChecking=accept-new" >> $GITHUB_ENV
+          echo "TARGET=${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" >> $GITHUB_ENV
+
+      - name: Login a GHCR en el server
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | ssh $SSHOPTS "$TARGET" "docker login ghcr.io -u ${{ github.actor }} --password-stdin"
+
+      - name: Desplegar frontend
+        run: |
+          TAG=${{ needs.build.outputs.tag }}
+          ssh $SSHOPTS "$TARGET" "docker pull ${{ env.IMG_WEB }}:$TAG"
+          ssh $SSHOPTS "$TARGET" "docker stop wiki-kof 2>/dev/null || true; docker rm wiki-kof 2>/dev/null || true"
+          ssh $SSHOPTS "$TARGET" "docker run -d \
             --name wiki-kof \
             --network traefik \
             --restart unless-stopped \
-            --label "traefik.enable=true" \
-            --label "traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)" \
-            --label "traefik.http.routers.wiki-kof.entrypoints=websecure" \
-            --label "traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt" \
-            --label "traefik.http.routers.wiki-kof.middlewares=wiki-kof-strip" \
-            --label "traefik.http.middlewares.wiki-kof-strip.stripprefix.prefixes=/es/kof" \
-            --label "traefik.http.services.wiki-kof.loadbalancer.server.port=80" \
-            wiki-kof:latest
+            --label 'traefik.enable=true' \
+            --label 'traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)' \
+            --label 'traefik.http.routers.wiki-kof.entrypoints=websecure' \
+            --label 'traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt' \
+            --label 'traefik.http.routers.wiki-kof.middlewares=wiki-kof-strip' \
+            --label 'traefik.http.middlewares.wiki-kof-strip.stripprefix.prefixes=/es/kof' \
+            --label 'traefik.http.services.wiki-kof.loadbalancer.server.port=80' \
+            ${{ env.IMG_WEB }}:$TAG"
 
-      - name: Deploy mascot API
+      - name: Desplegar mascot API
         run: |
-          set -e
-          docker build -t kof-mascot-api:latest /srv/wiki-kof/kof-api
-          docker stop kof-mascot-api 2>/dev/null || true
-          docker rm   kof-mascot-api 2>/dev/null || true
-          docker run -d \
+          TAG=${{ needs.build.outputs.tag }}
+          ssh $SSHOPTS "$TARGET" "docker pull ${{ env.IMG_API }}:$TAG"
+          ssh $SSHOPTS "$TARGET" "docker stop kof-mascot-api 2>/dev/null || true; docker rm kof-mascot-api 2>/dev/null || true"
+          ssh $SSHOPTS "$TARGET" "docker run -d \
             --name kof-mascot-api \
             --network traefik \
             --restart unless-stopped \
             --env-file /srv/wiki-kof/kof-api/.env \
-            --label "traefik.enable=true" \
-            --label "traefik.http.routers.kof-mascot-api.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/kof-api\`)" \
-            --label "traefik.http.routers.kof-mascot-api.entrypoints=websecure" \
-            --label "traefik.http.routers.kof-mascot-api.tls.certresolver=letsencrypt" \
-            --label "traefik.http.routers.kof-mascot-api.middlewares=kof-mascot-strip" \
-            --label "traefik.http.middlewares.kof-mascot-strip.stripprefix.prefixes=/kof-api" \
-            --label "traefik.http.services.kof-mascot-api.loadbalancer.server.port=3100" \
-            kof-mascot-api:latest
-          docker image prune -f
+            --label 'traefik.enable=true' \
+            --label 'traefik.http.routers.kof-mascot-api.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/kof-api\`)' \
+            --label 'traefik.http.routers.kof-mascot-api.entrypoints=websecure' \
+            --label 'traefik.http.routers.kof-mascot-api.tls.certresolver=letsencrypt' \
+            --label 'traefik.http.routers.kof-mascot-api.middlewares=kof-mascot-strip' \
+            --label 'traefik.http.middlewares.kof-mascot-strip.stripprefix.prefixes=/kof-api' \
+            --label 'traefik.http.services.kof-mascot-api.loadbalancer.server.port=3100' \
+            ${{ env.IMG_API }}:$TAG"
+          ssh $SSHOPTS "$TARGET" "docker image prune -f"
+
+      # Se comprueba el dominio publico desde el runner: valida lo que el
+      # usuario realmente alcanza y evita el quoting anidado por SSH.
+      - name: Health check
+        run: |
+          sleep 15
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' https://wiki.entersys.mx/es/kof --max-time 25)
+          echo "codigo HTTP frontend: $CODE"
+          case "$CODE" in
+            200|30*) echo "OK wiki-kof responde" ;;
+            *) echo "FALLO health check"; exit 1 ;;
+          esac
+
+      - name: Notify
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "Deploy exitoso — wiki.entersys.mx/es/kof @ ${{ needs.build.outputs.tag }}"
+          else
+            echo "Deploy fallido en ${{ github.sha }}"
+          fi
