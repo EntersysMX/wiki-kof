@@ -129,6 +129,30 @@ button { font-family: inherit; cursor: pointer; }
   white-space: nowrap;
 }
 
+/* ── Header nav (Acerca de / FAQ) ───────────────────────── */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.header-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #5f696f;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
 /* ── Ayuda desktop ───────────────────────────────────────── */
 .header-ayuda-desktop {
   flex-shrink: 0;
@@ -186,6 +210,8 @@ button { font-family: inherit; cursor: pointer; }
   }
 
   .header-ayuda-desktop { display: none !important; }
+
+  .header-nav { display: none !important; }
 
   .header-ayuda-fab { display: flex; }
 }

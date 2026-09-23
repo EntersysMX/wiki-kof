@@ -6,6 +6,8 @@ import StepDetail from './components/StepDetail';
 import HelpSection from './components/HelpSection';
 import Footer from './components/Footer';
 import MascotaWidget from './components/MascotaWidget';
+import FAQ from './components/FAQ';
+import IntroSection from './components/IntroSection';
 import { STEPS } from './data/steps';
 
 const FECHA_REVISION = 'julio 2025';
@@ -47,6 +49,16 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function goFaq() {
+    setView('faq');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goIntro() {
+    setView('intro');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function goToStep(n) {
     if (n < 1 || n > STEPS.length) return;
     openStep(n);
@@ -68,10 +80,30 @@ export default function App() {
     }
   }
 
+  if (view === 'faq') {
+    return (
+      <>
+        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
+        <FAQ onGoHome={goHome} />
+        <Footer fechaRevision={FECHA_REVISION} />
+      </>
+    );
+  }
+
+  if (view === 'intro') {
+    return (
+      <>
+        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
+        <IntroSection onGoHome={goHome} />
+        <Footer fechaRevision={FECHA_REVISION} />
+      </>
+    );
+  }
+
   if (view === 'step' && stepN) {
     return (
       <>
-        <Header onGoHome={goHome} q={q} onQ={setQ} />
+        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
         <MascotaWidget />
         <StepDetail
           stepN={stepN}
@@ -89,7 +121,7 @@ export default function App() {
 
   return (
     <>
-      <Header onGoHome={goHome} q={q} onQ={setQ} />
+      <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
       <Hero onStart={handleStart} fechaRevision={FECHA_REVISION} />
       <StepList
         seen={seen}
