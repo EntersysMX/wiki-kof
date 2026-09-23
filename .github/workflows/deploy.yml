@@ -99,11 +99,10 @@ jobs:
             --network traefik \
             --restart unless-stopped \
             --label 'traefik.enable=true' \
-            --label 'traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`) && PathPrefix(\`/es/kof\`)' \
+            --label 'traefik.http.routers.wiki-kof.rule=Host(\`wiki.entersys.mx\`)' \
             --label 'traefik.http.routers.wiki-kof.entrypoints=websecure' \
             --label 'traefik.http.routers.wiki-kof.tls.certresolver=letsencrypt' \
-            --label 'traefik.http.routers.wiki-kof.middlewares=wiki-kof-strip' \
-            --label 'traefik.http.middlewares.wiki-kof-strip.stripprefix.prefixes=/es/kof' \
+            --label 'traefik.http.routers.wiki-kof.priority=100' \
             --label 'traefik.http.services.wiki-kof.loadbalancer.server.port=80' \
             ${{ env.IMG_WEB }}:$TAG"
 
@@ -132,7 +131,7 @@ jobs:
       - name: Health check
         run: |
           sleep 15
-          CODE=$(curl -s -o /dev/null -w '%{http_code}' https://wiki.entersys.mx/es/kof --max-time 25)
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' https://wiki.entersys.mx --max-time 25)
           echo "codigo HTTP frontend: $CODE"
           case "$CODE" in
             200|30*) echo "OK wiki-kof responde" ;;
@@ -143,7 +142,7 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" = "success" ]; then
-            echo "Deploy exitoso — wiki.entersys.mx/es/kof @ ${{ needs.build.outputs.tag }}"
+            echo "Deploy exitoso — wiki.entersys.mx @ ${{ needs.build.outputs.tag }}"
           else
             echo "Deploy fallido en ${{ github.sha }}"
           fi
