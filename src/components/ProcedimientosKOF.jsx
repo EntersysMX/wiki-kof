@@ -77,15 +77,15 @@ export default function ProcedimientosKOF({ onGoHome, onGoMapa }) {
             Publicado y mantenido por Entersys. Todos los procedimientos fueron supervisados por Juan Carlos Bejerano, auditor Six Sigma Green Belt. Cada procedimiento muestra su objetivo y da acceso al documento en PDF.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
-            <a
-              href="#lista"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#009ca6', color: '#ffffff', borderRadius: 8, padding: '14px 24px', fontSize: 16, fontWeight: 600, fontFamily: "'Titillium Web', sans-serif", textDecoration: 'none', minHeight: 48, boxSizing: 'border-box' }}
+            <button
+              onClick={() => document.getElementById('lista')?.scrollIntoView({ behavior: 'smooth' })}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#009ca6', color: '#ffffff', borderRadius: 8, padding: '14px 24px', fontSize: 16, fontWeight: 600, fontFamily: "'Titillium Web', sans-serif", border: 'none', cursor: 'pointer', minHeight: 48, boxSizing: 'border-box' }}
               onMouseEnter={e => e.currentTarget.style.background = '#008089'}
               onMouseLeave={e => e.currentTarget.style.background = '#009ca6'}
             >
               Ver los procedimientos
               <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 20 }}>arrow_downward</span>
-            </a>
+            </button>
             <button
               onClick={onGoMapa}
               style={{ display: 'inline-flex', alignItems: 'center', gap: 6, minHeight: 48, padding: '0 16px', borderRadius: 8, background: 'none', border: 'none', cursor: 'pointer', color: '#7fccd1', fontWeight: 600, fontSize: 15, whiteSpace: 'nowrap', fontFamily: "'Titillium Web', sans-serif" }}

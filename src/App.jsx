@@ -37,7 +37,12 @@ export default function App() {
   const [q, setQ] = useState('');
 
   useEffect(() => {
-    const handler = () => setView(getViewFromPath());
+    // Guardar el view inicial en el history state
+    window.history.replaceState({ view: getViewFromPath() }, '');
+    const handler = e => {
+      // Usar el view guardado en state para ignorar cambios de hash
+      if (e.state?.view) setView(e.state.view);
+    };
     window.addEventListener('popstate', handler);
     return () => window.removeEventListener('popstate', handler);
   }, []);
@@ -58,7 +63,7 @@ export default function App() {
   }
 
   function goHome() {
-    window.history.pushState({}, '', '/');
+    window.history.pushState({ view: 'home' }, '', '/');
     setView('home');
     setStepN(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -75,7 +80,7 @@ export default function App() {
   }
 
   function goMapa() {
-    window.history.pushState({}, '', '/coordinadores/mapa');
+    window.history.pushState({ view: 'mapa' }, '', '/coordinadores/mapa');
     setView('mapa');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
