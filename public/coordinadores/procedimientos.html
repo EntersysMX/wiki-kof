@@ -23,25 +23,29 @@
     *:focus-visible{outline:3px solid #45b4bb;outline-offset:2px;border-radius:4px}
     button{font-family:inherit}
 
-    /* Header responsive — solo ocultar Ayuda del header en móvil/tablet */
-    .hdr-ayuda-link{display:flex}
+    /* Ocultar nav links del header en móvil/tablet */
+    .hdr-nav-btn{display:flex}
     @media(max-width:1023px){
-      .hdr-ayuda-link{display:none!important}
+      .hdr-nav-btn{display:none!important}
     }
 
-    /* FAB Ayuda — solo móvil y tablet */
-    .ayuda-fab{
+    /* FABs — solo móvil y tablet */
+    .fabs-container{
       display:none;
       position:fixed;bottom:20px;right:16px;z-index:100;
-      flex-direction:column;align-items:center;justify-content:center;gap:3px;
-      background:#009ca6;color:#ffffff;border-radius:16px;
-      padding:12px 16px;text-decoration:none;
+      flex-direction:column;align-items:flex-end;gap:10px;
+    }
+    @media(max-width:1023px){
+      .fabs-container{display:flex}
+    }
+    .fab{
+      display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+      color:#ffffff;border-radius:16px;padding:12px 16px;text-decoration:none;
       box-shadow:0 4px 16px rgba(0,100,107,0.35);
       font-family:'Titillium Web',sans-serif;
     }
-    @media(max-width:1023px){
-      .ayuda-fab{display:flex}
-    }
+    .fab-mapa{background:#1c2838;}
+    .fab-ayuda{background:#009ca6;}
   </style>
 </helmet>
 <template id="__bundler_thumbnail" data-bg-color="#1c2838"><svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#1c2838"/><rect x="450" y="250" width="300" height="300" rx="24" fill="#ffffff"/><rect x="500" y="320" width="200" height="18" rx="9" fill="#009ca6"/><rect x="500" y="370" width="160" height="18" rx="9" fill="#7c878e"/><rect x="500" y="420" width="180" height="18" rx="9" fill="#7c878e"/><rect x="500" y="470" width="120" height="18" rx="9" fill="#c2a56d"/></svg></template>
@@ -57,22 +61,28 @@
         <span style="font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;color:#1c2838;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Procedimientos</span>
       </div>
       <span style="flex:1"></span>
-      <a href="{{ urlMapa }}" style="display:flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
+      <a href="{{ urlMapa }}" class="hdr-nav-btn" style="align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
         <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px">account_tree</span>
         <span>Mapa del proceso</span>
       </a>
-      <a href="#ayuda" class="hdr-ayuda-link" style="align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
+      <a href="#ayuda" class="hdr-nav-btn" style="align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
         <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px">support_agent</span>
         <span>Ayuda</span>
       </a>
     </div>
   </header>
 
-  <!-- FAB Ayuda — solo visible en móvil y tablet via CSS -->
-  <a href="#ayuda" class="ayuda-fab" aria-label="Ir a la sección de ayuda">
-    <span class="material-symbols-rounded" aria-hidden="true" style="font-size:24px">support_agent</span>
-    <span style="font-size:13px;font-weight:700">Ayuda</span>
-  </a>
+  <!-- FABs — solo visibles en móvil y tablet via CSS -->
+  <div class="fabs-container">
+    <a href="{{ urlMapa }}" class="fab fab-mapa" aria-label="Ir al mapa del proceso">
+      <span class="material-symbols-rounded" aria-hidden="true" style="font-size:24px">account_tree</span>
+      <span style="font-size:13px;font-weight:700">Mapa</span>
+    </a>
+    <a href="#ayuda" class="fab fab-ayuda" aria-label="Ir a la sección de ayuda">
+      <span class="material-symbols-rounded" aria-hidden="true" style="font-size:24px">support_agent</span>
+      <span style="font-size:13px;font-weight:700">Ayuda</span>
+    </a>
+  </div>
 
   <main style="flex:1">
     <section style="background:#1c2838;color:#fafafa;padding:48px 20px 52px">
