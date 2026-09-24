@@ -23,14 +23,10 @@
     *:focus-visible{outline:3px solid #45b4bb;outline-offset:2px;border-radius:4px}
     button{font-family:inherit}
 
-    /* Header responsive */
-    .hdr-nav-link{display:flex}
-    .hdr-title-sub{display:block}
+    /* Header responsive — solo ocultar Ayuda del header en móvil/tablet */
+    .hdr-ayuda-link{display:flex}
     @media(max-width:1023px){
-      .hdr-nav-link{display:none!important}
-    }
-    @media(max-width:479px){
-      .hdr-title-sub{display:none}
+      .hdr-ayuda-link{display:none!important}
     }
 
     /* FAB Ayuda — solo móvil y tablet */
@@ -57,15 +53,15 @@
       </a>
       <span style="display:inline-block;width:1px;height:22px;background:#e2e6e8"></span>
       <div style="display:flex;flex-direction:column;min-width:0">
-        <span class="hdr-title-sub" style="font-family:'Titillium Web',sans-serif;font-weight:600;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#7c878e;white-space:nowrap">Portal KOF · Coordinadores de Seguridad</span>
+        <span style="font-family:'Titillium Web',sans-serif;font-weight:600;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#7c878e;white-space:nowrap">Portal KOF · Coordinadores de Seguridad</span>
         <span style="font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;color:#1c2838;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Procedimientos</span>
       </div>
       <span style="flex:1"></span>
-      <a href="{{ urlMapa }}" class="hdr-nav-link" style="align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
+      <a href="{{ urlMapa }}" style="display:flex;align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
         <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px">account_tree</span>
         <span>Mapa del proceso</span>
       </a>
-      <a href="#ayuda" class="hdr-nav-link" style="align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
+      <a href="#ayuda" class="hdr-ayuda-link" style="align-items:center;gap:6px;min-height:44px;padding:0 12px;border-radius:8px;text-decoration:none;color:#008089;font-weight:600;font-size:14px" style-hover="background:#e6f5f6;color:#00646b">
         <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px">support_agent</span>
         <span>Ayuda</span>
       </a>
