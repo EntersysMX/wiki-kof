@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 import MascotaWidget from './components/MascotaWidget';
 import FAQ from './components/FAQ';
 import IntroSection from './components/IntroSection';
+import MapaCoordinadores from './components/MapaCoordinadores';
+import ProcedimientosKOF from './components/ProcedimientosKOF';
 import { STEPS } from './data/steps';
 
 const FECHA_REVISION = 'julio 2025';
@@ -59,6 +61,16 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function goMapa() {
+    setView('mapa');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goProcedimientos() {
+    setView('procedimientos');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function goToStep(n) {
     if (n < 1 || n > STEPS.length) return;
     openStep(n);
@@ -83,7 +95,7 @@ export default function App() {
   if (view === 'faq') {
     return (
       <>
-        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
+        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} onGoMapa={goMapa} />
         <FAQ onGoHome={goHome} />
         <Footer fechaRevision={FECHA_REVISION} />
       </>
@@ -93,17 +105,29 @@ export default function App() {
   if (view === 'intro') {
     return (
       <>
-        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
+        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} onGoMapa={goMapa} />
         <IntroSection onGoHome={goHome} />
         <Footer fechaRevision={FECHA_REVISION} />
       </>
     );
   }
 
+  if (view === 'mapa') {
+    return (
+      <MapaCoordinadores onGoHome={goHome} onGoProcedimientos={goProcedimientos} />
+    );
+  }
+
+  if (view === 'procedimientos') {
+    return (
+      <ProcedimientosKOF onGoHome={goHome} onGoMapa={goMapa} />
+    );
+  }
+
   if (view === 'step' && stepN) {
     return (
       <>
-        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
+        <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} onGoMapa={goMapa} />
         <MascotaWidget />
         <StepDetail
           stepN={stepN}
@@ -121,7 +145,7 @@ export default function App() {
 
   return (
     <>
-      <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} />
+      <Header onGoHome={goHome} q={q} onQ={setQ} onGoFaq={goFaq} onGoIntro={goIntro} onGoMapa={goMapa} />
       <Hero onStart={handleStart} fechaRevision={FECHA_REVISION} />
       <StepList
         seen={seen}
