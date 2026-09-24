@@ -23,12 +23,24 @@ function loadDocs() {
   try { return JSON.parse(localStorage.getItem(LS_DOCS)) || {}; } catch { return {}; }
 }
 
+function getViewFromPath() {
+  const p = window.location.pathname;
+  if (p === '/coordinadores/mapa.html' || p === '/coordinadores/mapa') return 'mapa';
+  return 'home';
+}
+
 export default function App() {
-  const [view, setView] = useState('home');
+  const [view, setView] = useState(() => getViewFromPath());
   const [stepN, setStepN] = useState(null);
   const [seen, setSeen] = useState(loadSeen);
   const [docs, setDocs] = useState(loadDocs);
   const [q, setQ] = useState('');
+
+  useEffect(() => {
+    const handler = () => setView(getViewFromPath());
+    window.addEventListener('popstate', handler);
+    return () => window.removeEventListener('popstate', handler);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(LS_SEEN, JSON.stringify(seen));
@@ -46,6 +58,7 @@ export default function App() {
   }
 
   function goHome() {
+    window.history.pushState({}, '', '/');
     setView('home');
     setStepN(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -62,6 +75,7 @@ export default function App() {
   }
 
   function goMapa() {
+    window.history.pushState({}, '', '/coordinadores/mapa.html');
     setView('mapa');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

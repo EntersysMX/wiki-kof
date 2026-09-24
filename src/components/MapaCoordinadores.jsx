@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { NODES, NODE_MAP, EDGES, STATIONS, ACTORS, RECURSOS, GLOSSARY, VIEWS } from '../data/mapa';
+import entersysLogo from '../assets/entersys-logo.png';
 
 // ── Helpers de geometría ─────────────────────────────────────────
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -427,8 +428,8 @@ function DesktopCanvas({ onGoHome, onGoProcedimientos }) {
     });
     ro.observe(el);
     const r = el.getBoundingClientRect();
-    const b = bbox(NODES);
-    const s = clamp(Math.min((r.width - 72) / b.w, (r.height - 72) / b.h), 0.12, 1);
+    const b = bbox(NODES.filter(n => n.st === 's1'));
+    const s = clamp(Math.min((r.width - 90) / b.w, (r.height - 90) / b.h), 0.12, 0.95);
     setState(prev => ({ ...prev, vw: r.width, vh: r.height, scale: s, tx: (r.width - b.w * s) / 2 - b.x * s, ty: (r.height - b.h * s) / 2 - b.y * s }));
     const wheel = e => {
       e.preventDefault();
@@ -522,7 +523,7 @@ function DesktopCanvas({ onGoHome, onGoProcedimientos }) {
       <header style={{ background: '#ffffff', borderBottom: '1px solid #e2e6e8', flex: 'none', position: 'relative', zIndex: 60 }}>
         <div style={{ padding: '0 20px', display: 'flex', alignItems: 'center', gap: 14, height: 58 }}>
           <button onClick={onGoHome} style={{ display: 'flex', alignItems: 'center', minHeight: 44, background: 'none', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'none' }}>
-            <img src="/entersys-logo.png" alt="Entersys" style={{ height: 26, display: 'block' }} onError={e => { e.target.style.display = 'none'; }} />
+            <img src={entersysLogo} alt="Entersys" style={{ height: 26, display: 'block' }} />
           </button>
           <span style={{ width: 1, height: 24, background: '#e2e6e8' }} />
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
@@ -795,9 +796,82 @@ function DesktopCanvas({ onGoHome, onGoProcedimientos }) {
   );
 }
 
+// ── Tutorial ──────────────────────────────────────────────────────
+const TUTORIAL_STEPS = [
+  { icon: 'account_tree', title: 'Mapa del proceso para Coordinadores de Seguridad', body: 'Este mapa interactivo muestra el ciclo completo de gestión de un tercero contratista en KOF: desde el Onboarding hasta el cierre del trabajo de alto riesgo.' },
+  { icon: 'touch_app', title: 'Haz clic en cualquier paso para ver sus detalles', body: 'Al seleccionar un nodo verás su descripción, quién lo ejecuta, qué valida el Coordinador, los documentos que aplican y los recursos de apoyo (videos y manuales).' },
+  { icon: 'person_check', title: 'Filtra por intervención del Coordinador', body: 'Usa el filtro "Solo Coordinador" para resaltar únicamente los pasos en los que tú intervienes directamente. Los demás nodos se atenúan para mantener el contexto.' },
+  { icon: 'view_column', title: 'Navega entre las 6 estaciones del proceso', body: 'El proceso está dividido en 6 estaciones. Usa las pestañas para ir directo a una estación, o usa el zoom y el arrastre para explorar el mapa completo.' },
+];
+
+function TutorialModal({ onClose }) {
+  const [step, setStep] = useState(0);
+  const s = TUTORIAL_STEPS[step];
+  const isLast = step === TUTORIAL_STEPS.length - 1;
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(28,40,56,0.80)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+      <div style={{ background: '#ffffff', borderRadius: 16, maxWidth: 480, width: '100%', overflow: 'hidden', boxShadow: '0 20px 60px rgba(28,40,56,0.35)' }}>
+        <div style={{ background: '#1c2838', padding: '18px 24px', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span className="material-symbols-rounded" style={{ fontSize: 28, color: '#7fccd1', flex: 'none' }}>{s.icon}</span>
+          <span style={{ fontFamily: "'Titillium Web', sans-serif", fontWeight: 600, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#dcc9a1' }}>
+            Tutorial · Paso {step + 1} de {TUTORIAL_STEPS.length}
+          </span>
+        </div>
+        <div style={{ padding: '24px 24px 16px' }}>
+          <h2 style={{ margin: '0 0 12px', fontFamily: "'Titillium Web', sans-serif", fontWeight: 700, fontSize: 19, lineHeight: 1.3, color: '#1c2838' }}>{s.title}</h2>
+          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.65, color: '#454d52' }}>{s.body}</p>
+        </div>
+        <div style={{ padding: '0 24px 16px', display: 'flex', gap: 6 }}>
+          {TUTORIAL_STEPS.map((_, i) => (
+            <button key={i} onClick={() => setStep(i)} style={{ width: i === step ? 20 : 8, height: 8, borderRadius: 999, background: i === step ? '#009ca6' : '#e2e6e8', border: 'none', cursor: 'pointer', padding: 0, transition: 'width 0.2s, background 0.2s' }} />
+          ))}
+        </div>
+        <div style={{ borderTop: '1px solid #e2e6e8', padding: '14px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#5f696f', fontSize: 14, fontWeight: 600, padding: '8px 4px', fontFamily: 'inherit' }}>
+            Saltar tutorial
+          </button>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {step > 0 && (
+              <button onClick={() => setStep(s => s - 1)} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#f1f3f4', color: '#1c2838', border: 'none', borderRadius: 8, padding: '10px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+                <span className="material-symbols-rounded" style={{ fontSize: 17 }}>arrow_back</span>
+                Anterior
+              </button>
+            )}
+            <button onClick={() => isLast ? onClose() : setStep(s => s + 1)} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: '#009ca6', color: '#ffffff', border: 'none', borderRadius: 8, padding: '10px 20px', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: "'Titillium Web', sans-serif" }}>
+              {isLast ? 'Comenzar' : 'Siguiente'}
+              <span className="material-symbols-rounded" style={{ fontSize: 17 }}>{isLast ? 'check' : 'arrow_forward'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TutorialPrompt({ onView, onSkip }) {
+  return (
+    <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 200, background: '#1c2838', color: '#ffffff', borderRadius: 14, padding: '16px 18px', width: 280, boxShadow: '0 8px 28px rgba(28,40,56,0.35)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+        <span className="material-symbols-rounded" style={{ fontSize: 22, color: '#7fccd1', flex: 'none' }}>school</span>
+        <span style={{ fontFamily: "'Titillium Web', sans-serif", fontWeight: 700, fontSize: 14, lineHeight: 1.3 }}>¿Ver el tutorial del mapa?</span>
+      </div>
+      <p style={{ margin: '0 0 14px', fontSize: 13, lineHeight: 1.5, color: '#c9d2da' }}>Aprende a navegar el proceso en 4 pasos rápidos.</p>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <button onClick={onSkip} style={{ flex: 1, background: 'rgba(255,255,255,0.10)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.20)', borderRadius: 8, padding: '9px 0', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+          Saltar
+        </button>
+        <button onClick={onView} style={{ flex: 1, background: '#009ca6', color: '#ffffff', border: 'none', borderRadius: 8, padding: '9px 0', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: "'Titillium Web', sans-serif" }}>
+          Ver tutorial
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── Componente principal: elige vista según ancho ─────────────────
 export default function MapaCoordinadores({ onGoHome, onGoProcedimientos }) {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024);
+  const [tutorialState, setTutorialState] = useState('prompt'); // 'prompt' | 'tutorial' | 'done'
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 1024);
@@ -805,8 +879,21 @@ export default function MapaCoordinadores({ onGoHome, onGoProcedimientos }) {
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  if (isMobile) {
-    return <MobileView onGoHome={onGoHome} onGoProcedimientos={onGoProcedimientos} />;
-  }
-  return <DesktopCanvas onGoHome={onGoHome} onGoProcedimientos={onGoProcedimientos} />;
+  return (
+    <>
+      {isMobile
+        ? <MobileView onGoHome={onGoHome} onGoProcedimientos={onGoProcedimientos} />
+        : <DesktopCanvas onGoHome={onGoHome} onGoProcedimientos={onGoProcedimientos} />
+      }
+      {tutorialState === 'prompt' && (
+        <TutorialPrompt
+          onView={() => setTutorialState('tutorial')}
+          onSkip={() => setTutorialState('done')}
+        />
+      )}
+      {tutorialState === 'tutorial' && (
+        <TutorialModal onClose={() => setTutorialState('done')} />
+      )}
+    </>
+  );
 }
