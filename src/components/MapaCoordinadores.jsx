@@ -850,7 +850,8 @@ function TutorialModal({ onClose }) {
 
 function TutorialPrompt({ onView, onSkip }) {
   return (
-    <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 200, background: '#1c2838', color: '#ffffff', borderRadius: 14, padding: '16px 18px', width: 280, boxShadow: '0 8px 28px rgba(28,40,56,0.35)' }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(28,40,56,0.60)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+    <div style={{ background: '#1c2838', color: '#ffffff', borderRadius: 14, padding: '24px 24px', width: 320, boxShadow: '0 12px 40px rgba(28,40,56,0.45)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
         <span className="material-symbols-rounded" style={{ fontSize: 22, color: '#7fccd1', flex: 'none' }}>school</span>
         <span style={{ fontFamily: "'Titillium Web', sans-serif", fontWeight: 700, fontSize: 14, lineHeight: 1.3 }}>¿Ver el tutorial del mapa?</span>
@@ -864,6 +865,7 @@ function TutorialPrompt({ onView, onSkip }) {
           Ver tutorial
         </button>
       </div>
+    </div>
     </div>
   );
 }
