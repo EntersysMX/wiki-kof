@@ -1,10 +1,10 @@
 const HIGH_RISK_TYPES = [
-  { icon: 'ladder', label: 'Trabajo en alturas', desc: 'Actividades a más de 1.8 m sobre el nivel del suelo.' },
+  { icon: 'stairs', label: 'Trabajo en alturas', desc: 'Actividades a más de 1.8 m sobre el nivel del suelo.' },
   { icon: 'do_not_touch', label: 'Espacios confinados', desc: 'Ingreso a tanques, silos, tuberías u otros recintos cerrados.' },
   { icon: 'electric_bolt', label: 'Trabajos eléctricos', desc: 'Intervención en instalaciones o equipos energizados.' },
   { icon: 'mode_heat', label: 'Trabajos en caliente', desc: 'Soldadura, corte o cualquier actividad que genere chispa o llama.' },
   { icon: 'local_shipping', label: 'Izaje de cargas', desc: 'Uso de grúas, polipastos o equipos de levantamiento.' },
-  { icon: 'excavator', label: 'Excavaciones y zanjas', desc: 'Apertura de terreno a más de 1.5 m de profundidad.' },
+  { icon: 'terrain', label: 'Excavaciones y zanjas', desc: 'Apertura de terreno a más de 1.5 m de profundidad.' },
   { icon: 'science', label: 'Sustancias peligrosas', desc: 'Manejo, traslado o disposición de materiales HAZMAT.' },
   { icon: 'construction', label: 'Herramientas de poder', desc: 'Uso de equipos neumáticos, hidráulicos o de alto torque.' },
 ];
