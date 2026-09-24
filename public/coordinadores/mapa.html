@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/entersys-ds-ad8f35d8-da68-4d5d-a3bd-0aca96694e7c/tokens/fonts.css">
+  <link rel="stylesheet" href="assets/icons-local.css">
+  <link rel="stylesheet" href="_ds/entersys-ds-ad8f35d8-da68-4d5d-a3bd-0aca96694e7c/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/entersys-ds-ad8f35d8-da68-4d5d-a3bd-0aca96694e7c/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/entersys-ds-ad8f35d8-da68-4d5d-a3bd-0aca96694e7c/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/entersys-ds-ad8f35d8-da68-4d5d-a3bd-0aca96694e7c/tokens/base.css">
+  <script src="_ds/entersys-ds-ad8f35d8-da68-4d5d-a3bd-0aca96694e7c/_ds_bundle.js"></script>
+  <script>(function(){if(document.querySelector('link[data-msr]'))return;var l=document.createElement('link');l.rel='stylesheet';l.setAttribute('data-msr','1');l.href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";document.head.appendChild(l);})();</script>
+  <style>
+    html,body{margin:0;height:100%;background:#fafafa;font-family:'Inter',system-ui,sans-serif;color:#454d52;-webkit-font-smoothing:antialiased}
+    a{color:#008089}a:hover{color:#00646b}
+    *:focus-visible{outline:3px solid #45b4bb;outline-offset:2px;border-radius:4px}
+    button{font-family:inherit}
+    table{border-collapse:collapse}
+  </style>
+</helmet>
+<template id="__bundler_thumbnail" data-bg-color="#1c2838"><svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg"><rect width="1200" height="800" fill="#1c2838"/><rect x="300" y="340" width="150" height="120" rx="18" fill="#ffffff"/><rect x="525" y="340" width="150" height="120" rx="18" fill="#009ca6"/><rect x="750" y="340" width="150" height="120" rx="18" fill="#c2a56d"/><rect x="450" y="396" width="75" height="8" fill="#7c878e"/><rect x="675" y="396" width="75" height="8" fill="#7c878e"/></svg></template>
+<div onKeyDown="{{ onRootKey }}" style="min-width:1366px;height:100vh;display:flex;flex-direction:column;background:#fafafa;color:#454d52">
+
+  <header style="background:#ffffff;border-bottom:1px solid #e2e6e8;flex:none;position:relative;z-index:60">
+    <div style="padding:0 20px;display:flex;align-items:center;gap:14px;height:58px">
+      <a href="{{ urlPortal }}" aria-label="Ir al Portal KOF de contratistas" style="display:flex;align-items:center;min-height:44px;text-decoration:none">
+        <img src="assets/entersys_isologotype_horizontal.png" alt="Entersys" style="height:26px;display:block">
+      </a>
+      <span style="width:1px;height:24px;background:#e2e6e8"></span>
+      <div style="display:flex;flex-direction:column;min-width:0">
+        <span style="font-family:'Titillium Web',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7c878e">Portal KOF · Acceso especial</span>
+        <span style="font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;color:#1c2838;white-space:nowrap">Mapa del proceso para Coordinadores de Seguridad</span>
+      </div>
+      <span style="flex:1"></span>
+      <div data-tour="busqueda" style="position:relative;width:380px">
+        <label style="display:flex;align-items:center;gap:8px;border:1px solid #cdd4d7;border-radius:8px;background:#ffffff;padding:0 12px;height:40px">
+          <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#7c878e">search</span>
+          <input value="{{ q }}" onChange="{{ setQ }}" onKeyDown="{{ onSearchKey }}" onFocus="{{ openSearch }}" aria-label="Buscar por paso o documento" placeholder="Buscar paso o documento, p. ej. SUA, DC3" style="flex:1;border:none;outline:none;font-size:14px;font-family:inherit;color:#1c2838;background:transparent;min-width:0">
+          <sc-if value="{{ hasQ }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ clearQ }}" aria-label="Borrar búsqueda" style="border:none;background:transparent;cursor:pointer;color:#7c878e;display:flex;padding:4px;border-radius:6px" style-hover="background:#f1f3f4;color:#1c2838"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px">close</span></button>
+          </sc-if>
+        </label>
+        <sc-if value="{{ showResults }}" hint-placeholder-val="{{ false }}">
+          <div role="listbox" aria-label="Resultados de búsqueda" style="position:absolute;top:46px;left:0;right:0;background:#ffffff;border:1px solid #e2e6e8;border-radius:10px;box-shadow:0 8px 24px rgba(28,40,56,0.14);overflow:hidden;max-height:380px;overflow-y:auto">
+            <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0;padding:14px 16px;font-size:14px;color:#5f696f">Sin coincidencias en pasos ni documentos. Intente con otro término.</p>
+            </sc-if>
+            <sc-for list="{{ results }}" as="r" hint-placeholder-count="2">
+              <button role="option" onClick="{{ r.pick }}" style="display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;border:none;border-bottom:1px solid #f1f3f4;background:#ffffff;padding:10px 14px;cursor:pointer" style-hover="background:#e6f5f6">
+                <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#008089;margin-top:1px">{{ r.icon }}</span>
+                <span style="flex:1;min-width:0">
+                  <span style="display:block;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;color:#1c2838">{{ r.title }}</span>
+                  <span style="display:block;font-size:12.5px;color:#5f696f;margin-top:2px">{{ r.why }}</span>
+                </span>
+                <span style="font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#7c878e;white-space:nowrap">{{ r.station }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <button onClick="{{ startTour }}" style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border:1px solid #cdd4d7;border-radius:8px;background:#ffffff;color:#1c2838;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#f1f3f4;border-color:#a7b1b6">
+        <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#008089">school</span>Tutorial
+      </button>
+      <button data-tour="procedimientos" onClick="{{ goProcedimientos }}" style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border:1px solid #cdd4d7;border-radius:8px;background:#ffffff;color:#1c2838;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#f1f3f4;border-color:#a7b1b6">
+        <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#008089">list_alt_check</span>Procedimientos
+      </button>
+    </div>
+  </header>
+
+  <div style="background:#ffffff;border-bottom:1px solid #e2e6e8;flex:none;padding:0 20px;height:64px;display:flex;align-items:center;gap:16px;position:relative;z-index:50">
+    <nav data-tour="estaciones" aria-label="Estaciones del proceso" style="display:flex;align-items:center;gap:4px">
+      <sc-for list="{{ stations }}" as="st" hint-placeholder-count="6">
+        <button onClick="{{ st.go }}" aria-current="{{ st.ariaCurrent }}" title="{{ st.full }}" aria-label="{{ st.full }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;border-radius:999px;border:1px solid {{ st.border }};background:{{ st.bg }};color:{{ st.fg }};font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap" style-hover="border-color:#009ca6">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:700;background:{{ st.numBg }};color:{{ st.numFg }}"><sc-if value="{{ st.hasN }}" hint-placeholder-val="{{ true }}">{{ st.n }}</sc-if><sc-if value="{{ st.noN }}" hint-placeholder-val="{{ false }}"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:13px">alt_route</span></sc-if></span>{{ st.label }}
+        </button>
+      </sc-for>
+    </nav>
+    <span style="flex:1"></span>
+    <div data-tour="filtro" style="flex:none;display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+    <span id="filtro-caption" style="font-family:'Titillium Web',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#5f696f;line-height:1">Filtrar por intervención:</span>
+    <div role="group" aria-labelledby="filtro-caption" style="flex:none;display:inline-flex;border:1px solid #cdd4d7;border-radius:8px;overflow:hidden;background:#ffffff">
+      <sc-for list="{{ views }}" as="v" hint-placeholder-count="4">
+        <button onClick="{{ v.pick }}" aria-pressed="{{ v.pressed }}" title="{{ v.label }}" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border:none;border-right:1px solid #e2e6e8;background:{{ v.bg }};color:{{ v.fg }};font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap" style-hover="background:#e6f5f6">
+          <sc-if value="{{ v.hasIcon }}" hint-placeholder-val="{{ false }}"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px">{{ v.icon }}</span></sc-if>{{ v.label }}
+        </button>
+      </sc-for>
+    </div>
+    </div>
+  </div>
+  <sc-if value="{{ isCoordView }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex:none;background:#e6f5f6;border-bottom:1px solid #b9e3e6;padding:0 20px;height:36px;display:flex;align-items:center;gap:8px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;color:#00646b;position:relative;z-index:50">
+      <span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px">person_check</span>El Coordinador de Seguridad interviene en 10 puntos del ciclo<span style="font-family:'Inter',sans-serif;font-weight:400;font-size:13px;color:#0b5560">· Los demás nodos se atenúan para conservar el contexto.</span>
+    </div>
+  </sc-if>
+  <div style="display:none">
+  </div>
+
+  <main style="flex:1;position:relative;overflow:hidden;min-height:0">
+    <div ref="{{ vpRef }}" tabIndex="0" role="application" aria-label="Lienzo del mapa del proceso. Se desplaza arrastrando o con las flechas del teclado; Tab recorre los nodos." onPointerDown="{{ onDown }}" onKeyDown="{{ onCanvasKey }}" style="position:absolute;inset:0;overflow:hidden;cursor:{{ cursor }};background-color:#f4f6f7;background-image:{{ gridImage }};background-size:32px 32px;touch-action:none;user-select:none">
+      <div style="position:absolute;left:0;top:0;width:6500px;height:1080px;transform-origin:0 0;transform:translate({{ tx }}px,{{ ty }}px) scale({{ scale }});transition:{{ transition }};will-change:transform">
+        <sc-for list="{{ bands }}" as="b" hint-placeholder-count="6">
+          <div aria-hidden="true" style="position:absolute;left:{{ b.x }}px;top:{{ b.y }}px;width:{{ b.w }}px;height:{{ b.h }}px;border:1.5px dashed #cdd4d7;border-radius:18px;background:rgba(255,255,255,0.55)">
+            <span style="position:absolute;left:18px;right:18px;bottom:12px;display:flex;flex-direction:column;gap:3px">
+              <span style="font-family:'Titillium Web',sans-serif;font-weight:700;font-size:16px;color:#1c2838;display:inline-flex;align-items:center;gap:8px;white-space:nowrap"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#1c2838;color:#ffffff;font-size:12px;flex:none"><sc-if value="{{ b.hasN }}" hint-placeholder-val="{{ true }}">{{ b.n }}</sc-if><sc-if value="{{ b.noN }}" hint-placeholder-val="{{ false }}"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:14px">alt_route</span></sc-if></span>{{ b.label }}</span>
+              <sc-if value="{{ b.note }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;color:#5f696f;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding-left:30px"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:16px;color:#008089">info</span>{{ b.note }}</span></sc-if>
+            </span>
+          </div>
+        </sc-for>
+        <svg aria-hidden="true" width="6500" height="1080" viewBox="0 0 6500 1080" style="position:absolute;left:0;top:0;overflow:visible;pointer-events:none">
+          <defs>
+            <marker id="arw-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7c878e"></path></marker>
+            <marker id="arw-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#009ca6"></path></marker>
+            <marker id="arw-light" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#a7b1b6"></path></marker>
+          </defs>
+          <sc-for list="{{ edges }}" as="e" hint-placeholder-count="30">
+            <g style="opacity:{{ e.op }}">
+              <path d="{{ e.d }}" fill="none" style="stroke:{{ e.stroke }};stroke-width:{{ e.sw }};stroke-dasharray:{{ e.dash }};marker-end:url({{ e.marker }})"></path>
+            </g>
+          </sc-for>
+        </svg>
+        <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="30">
+          <sc-if value="{{ n.isDecision }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ n.open }}" data-node-id="{{ n.id }}" aria-label="{{ n.aria }}" aria-expanded="{{ n.sel }}" style="position:absolute;left:{{ n.x }}px;top:{{ n.y }}px;width:150px;height:150px;border:none;background:transparent;padding:0;cursor:pointer;opacity:{{ n.op }};transition:opacity .2s;filter:{{ n.filter }}" style-hover="filter:drop-shadow(0 6px 12px rgba(28,40,56,0.22))">
+              <span aria-hidden="true" style="position:absolute;inset:24px;transform:rotate(45deg);background:#ffffff;border:2.5px solid #c2a56d;border-radius:10px;box-shadow:{{ n.shadow }}"></span>
+              <span style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0 30px;text-align:center">
+                <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#8a6a1d">alt_route</span>
+                <span style="font-family:'Titillium Web',sans-serif;font-weight:700;font-size:12.5px;line-height:1.2;color:#1c2838">{{ n.label }}</span>
+              </span>
+            </button>
+          </sc-if>
+          <sc-if value="{{ n.isCard }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ n.open }}" data-node-id="{{ n.id }}" aria-label="{{ n.aria }}" aria-expanded="{{ n.sel }}" style="position:absolute;left:{{ n.x }}px;top:{{ n.y }}px;width:220px;height:124px;box-sizing:border-box;text-align:left;display:flex;flex-direction:column;padding:0;border-radius:12px;background:{{ n.bg }};border:1.5px {{ n.borderStyle }} {{ n.border }};cursor:pointer;opacity:{{ n.op }};box-shadow:{{ n.shadow }};overflow:hidden;transition:opacity .2s,box-shadow .15s,transform .15s" style-hover="box-shadow:0 8px 18px rgba(28,40,56,0.20);transform:translateY(-2px)">
+              <span style="display:flex;align-items:center;gap:8px;padding:10px 10px 0 10px;min-width:0">
+                <span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:7px;background:{{ n.chipBg }};color:{{ n.chipFg }};display:inline-flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:16px">{{ n.icon }}</span></span>
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.15"><span style="font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#1c2838;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.eyebrow }}</span><sc-if value="{{ n.sub }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;font-weight:600;color:#5f696f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.sub }}</span></sc-if></span>
+              </span>
+              <span style="flex:1;min-height:0;padding:6px 10px 8px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;line-height:1.2;color:#1c2838;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;text-wrap:pretty">{{ n.label }}</span>
+              <sc-if value="{{ n.interviene }}" hint-placeholder-val="{{ false }}">
+                <span style="flex:none;display:flex;align-items:center;gap:5px;background:#009ca6;color:#ffffff;font-size:11px;font-weight:700;letter-spacing:0.02em;padding:0 10px;height:24px"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:14px">person_check</span>Interviene el Coordinador</span>
+              </sc-if>
+              <sc-if value="{{ n.hit }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute;top:-12px;right:10px;display:inline-flex;align-items:center;gap:4px;background:#c2a56d;color:#1c2838;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:13px">search</span>Coincidencia</span>
+              </sc-if>
+            </button>
+          </sc-if>
+        </sc-for>
+        <sc-for list="{{ edges }}" as="e" hint-placeholder-count="30">
+          <sc-if value="{{ e.hasLabel }}" hint-placeholder-val="{{ false }}">
+            <span aria-hidden="true" style="position:absolute;left:{{ e.lx }}px;top:{{ e.ly }}px;transform:{{ e.shift }};font-family:'Inter',sans-serif;font-size:{{ e.fs }};font-weight:600;color:{{ e.lfill }};background:#f4f6f7;padding:1px 6px;border-radius:4px;white-space:nowrap;opacity:{{ e.op }};pointer-events:none;line-height:1.3">{{ e.label }}</span>
+          </sc-if>
+        </sc-for>
+      </div>
+    </div>
+
+    <div data-tour="leyenda" style="position:absolute;left:16px;bottom:16px;z-index:20;background:#ffffff;border:1px solid #e2e6e8;border-radius:12px;box-shadow:0 4px 12px rgba(28,40,56,0.08);width:{{ legendWidth }};overflow:hidden;transition:width .2s cubic-bezier(.4,0,.2,1)">
+      <button onClick="{{ toggleLegend }}" aria-expanded="{{ legendOpen }}" style="display:flex;align-items:center;gap:8px;width:100%;border:none;background:#ffffff;padding:10px 14px;cursor:pointer;text-align:left;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;color:#1c2838;min-height:44px" style-hover="background:#f1f3f4">
+        <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#008089">legend_toggle</span><span style="flex:1">Leyenda</span><span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#7c878e">{{ legendChevron }}</span>
+      </button>
+      <sc-if value="{{ legendOpen }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ openGlossary }}" style="display:flex;align-items:center;gap:8px;width:100%;border:none;border-top:1px solid #e2e6e8;background:#ffffff;padding:8px 14px;cursor:pointer;text-align:left;font-size:13px;font-weight:600;color:#008089;min-height:40px" style-hover="background:#e6f5f6;color:#00646b"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px">spellcheck</span>Glosario de términos (NSS, RFC, SUA, DC3, OC…)</button>
+      </sc-if>
+      <sc-if value="{{ legendOpen }}" hint-placeholder-val="{{ true }}">
+        <div style="border-top:1px solid #e2e6e8;padding:10px 14px 12px;display:grid;grid-template-columns:auto auto;gap:8px 24px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <p style="margin:0 0 2px;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#7c878e;white-space:nowrap">Actores</p>
+            <sc-for list="{{ legendActors }}" as="l" hint-placeholder-count="5">
+              <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:#454d52;white-space:nowrap"><span style="width:26px;height:18px;border-radius:5px;background:{{ l.bg }};border:1.5px {{ l.borderStyle }} {{ l.border }};box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:13px;color:{{ l.border }}">{{ l.icon }}</span></span>{{ l.label }}</span>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <p style="margin:0 0 2px;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#7c878e;white-space:nowrap">Símbolos</p>
+            <span style="display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><span style="width:26px;height:18px;flex:none;display:inline-flex;align-items:center;justify-content:center;background:#009ca6;border-radius:5px"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:13px;color:#ffffff">person_check</span></span>Punto de intervención del Coordinador</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><span style="width:26px;height:18px;display:flex;align-items:center;justify-content:center;flex:none"><span style="width:12px;height:12px;transform:rotate(45deg);border:2px solid #c2a56d;border-radius:2px;background:#ffffff"></span></span>Decisión (sí / no)</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><svg width="26" height="18" aria-hidden="true"><line x1="0" y1="9" x2="26" y2="9" stroke="#7c878e" stroke-width="2"></line></svg>Flujo principal</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><svg width="26" height="18" aria-hidden="true"><line x1="0" y1="9" x2="26" y2="9" stroke="#009ca6" stroke-width="2" stroke-dasharray="5 3"></line></svg>Conexión entre procesos</span>
+            <span style="display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><svg width="26" height="18" aria-hidden="true"><path d="M22 15 C22 3 4 3 4 15" fill="none" stroke="#7c878e" stroke-width="1.5" stroke-dasharray="2 2"></path></svg>Rechazo → corrección → reenvío</span>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div data-tour="zoom" role="group" aria-label="Zoom" style="position:absolute;right:{{ zoomRight }};bottom:16px;z-index:20;display:flex;align-items:center;gap:6px;background:#ffffff;border:1px solid #e2e6e8;border-radius:10px;box-shadow:0 4px 12px rgba(28,40,56,0.08);padding:4px;transition:right .28s cubic-bezier(.4,0,.2,1)">
+      <button onClick="{{ zoomOut }}" aria-label="Alejar" style="width:40px;height:40px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#1c2838;display:flex;align-items:center;justify-content:center" style-hover="background:#f1f3f4"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:22px">remove</span></button>
+      <button onClick="{{ zoomReset }}" aria-label="Restablecer zoom al 100 %" style="min-width:56px;height:40px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-weight:700;font-size:13px;color:#1c2838;font-variant-numeric:tabular-nums" style-hover="background:#f1f3f4">{{ zoomPct }}</button>
+      <button onClick="{{ zoomIn }}" aria-label="Acercar" style="width:40px;height:40px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#1c2838;display:flex;align-items:center;justify-content:center" style-hover="background:#f1f3f4"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:22px">add</span></button>
+      <span style="width:1px;height:24px;background:#e2e6e8"></span>
+      <button onClick="{{ fitAll }}" style="display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border:none;border-radius:8px;background:#1c2838;color:#ffffff;font-weight:600;font-size:13.5px;cursor:pointer" style-hover="background:#26374b"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px">fit_screen</span>Ajustar a pantalla</button>
+    </div>
+
+    <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+      <aside data-tour="panel" ref="{{ panelRef }}" tabIndex="-1" aria-label="Detalle del paso" style="position:absolute;top:0;right:0;bottom:0;width:440px;background:#ffffff;border-left:1px solid #e2e6e8;box-shadow:-8px 0 24px rgba(28,40,56,0.10);z-index:30;display:flex;flex-direction:column;outline:none">
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:14px 16px 12px;border-bottom:1px solid #e2e6e8">
+          <div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px">
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:#f1f3f4;color:#454d52"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:14px">location_on</span>{{ selStation }}</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:{{ selChipBg }};color:{{ selChipFg }}"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:14px">{{ selIcon }}</span>{{ selActor }}</span>
+            <sc-if value="{{ selInterviene }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:#009ca6;color:#ffffff"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:14px">person_check</span>Interviene el Coordinador</span></sc-if>
+          </div>
+          <button onClick="{{ closePanel }}" aria-label="Cerrar detalle" style="width:40px;height:40px;flex:none;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#5f696f;display:flex;align-items:center;justify-content:center" style-hover="background:#f1f3f4;color:#1c2838"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:22px">close</span></button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:18px 20px 20px;display:flex;flex-direction:column;gap:18px">
+          <div>
+            <sc-if value="{{ selTag }}" hint-placeholder-val="{{ false }}"><p style="margin:0 0 4px;font-family:'Titillium Web',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#7c878e">{{ selTag }}</p></sc-if>
+            <h2 style="margin:0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:24px;line-height:1.15;color:#1c2838;text-wrap:pretty">{{ selTitle }}</h2>
+          </div>
+          <section>
+            <h3 style="margin:0 0 6px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5f696f">Qué sucede</h3>
+            <p style="margin:0;font-size:14.5px;line-height:1.6;color:#454d52;text-wrap:pretty">{{ selBody }}</p>
+          </section>
+          <sc-if value="{{ selIsCredStation }}" hint-placeholder-val="{{ false }}">
+            <div role="note" style="display:flex;gap:10px;background:#e6f5f6;border:1px solid #b9e3e6;border-radius:10px;padding:12px 14px">
+              <span class="material-symbols-rounded" aria-hidden="true" style="font-size:22px;color:#00646b;flex:none">info</span>
+              <p style="margin:0;font-size:13.5px;line-height:1.55;color:#0b5560">El Coordinador no valida la credencial: se genera automáticamente y se destraba al validarse el Paso 3 · Listado de Personal.</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ selIsCredSample }}" hint-placeholder-val="{{ false }}">
+            <section>
+              <h3 style="margin:0 0 8px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5f696f">Muestra de la credencial (6 × 9)</h3>
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <div aria-label="Muestra ilustrativa de la credencial digital" role="img" style="flex:none;width:180px;aspect-ratio:6/9;background:#ffffff;border:1px solid #111111;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;font-family:'Inter',sans-serif">
+                  <div style="background:#c8102e;height:46px;display:flex;align-items:center;justify-content:center;color:#ffffff;font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase">Credencial digital</div>
+                  <div style="flex:1;padding:12px;display:flex;flex-direction:column;gap:10px;align-items:center">
+                    <div style="width:84px;height:100px;border:1.5px dashed #111111;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#111111">[Foto]</div>
+                    <div style="width:100%;display:flex;flex-direction:column;gap:6px;font-size:10.5px;color:#111111;line-height:1.35">
+                      <span style="border-bottom:1px solid #111111;padding-bottom:3px">[Nombre del colaborador]</span>
+                      <span style="border-bottom:1px solid #111111;padding-bottom:3px">[NSS]</span>
+                      <span style="border-bottom:1px solid #111111;padding-bottom:3px">[Empresa contratista]</span>
+                    </div>
+                  </div>
+                  <div style="background:#111111;height:14px"></div>
+                </div>
+                <p style="margin:0;font-size:13px;line-height:1.55;color:#5f696f">Muestra ilustrativa. El diseño oficial de la credencial se define por separado.</p>
+              </div>
+            </section>
+          </sc-if>
+          <section>
+            <h3 style="margin:0 0 6px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5f696f">Quién ejecuta / quién valida</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:#fafafa;border:1px solid #e2e6e8;border-radius:10px;padding:10px 12px"><span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#7c878e;margin-bottom:3px">Ejecuta</span><span style="font-size:13.5px;font-weight:600;color:#1c2838">{{ selEjecuta }}</span></div>
+              <div style="background:#fafafa;border:1px solid #e2e6e8;border-radius:10px;padding:10px 12px"><span style="display:block;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#7c878e;margin-bottom:3px">Valida</span><span style="font-size:13.5px;font-weight:600;color:#1c2838">{{ selValida }}</span></div>
+            </div>
+          </section>
+          <sc-if value="{{ selRevisas }}" hint-placeholder-val="{{ false }}">
+            <section style="background:#e6f5f6;border:1px solid #b9e3e6;border-radius:12px;padding:14px 16px">
+              <h3 style="margin:0 0 6px;display:flex;align-items:center;gap:6px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;color:#084c52"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px">fact_check</span>Qué revisa el Coordinador</h3>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:#0b5560;text-wrap:pretty">{{ selRevisas }}</p>
+            </section>
+          </sc-if>
+          <sc-if value="{{ selHasDocs }}" hint-placeholder-val="{{ false }}">
+            <section>
+              <h3 style="margin:0 0 8px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5f696f">Documentos involucrados</h3>
+              <table style="width:100%;font-size:13px;border:1px solid #e2e6e8;border-radius:10px;overflow:hidden;border-spacing:0">
+                <thead><tr style="background:#fafafa"><th scope="col" style="text-align:left;padding:8px 10px;font-weight:600;color:#5f696f;border-bottom:1px solid #e2e6e8;width:44%">Documento</th><th scope="col" style="text-align:left;padding:8px 10px;font-weight:600;color:#5f696f;border-bottom:1px solid #e2e6e8">{{ selDocsCol2 }}</th></tr></thead>
+                <tbody>
+                  <sc-for list="{{ selDocs }}" as="d" hint-placeholder-count="3">
+                    <tr><td style="padding:8px 10px;border-bottom:1px solid #f1f3f4;font-weight:600;color:#1c2838;vertical-align:top">{{ d.name }}</td><td style="padding:8px 10px;border-bottom:1px solid #f1f3f4;color:#454d52;line-height:1.5;vertical-align:top">{{ d.note }}</td></tr>
+                  </sc-for>
+                </tbody>
+              </table>
+            </section>
+          </sc-if>
+          <sc-if value="{{ selRechazo }}" hint-placeholder-val="{{ false }}">
+            <div role="note" style="display:flex;gap:12px;background:#fdf6e7;border:1px solid #ecd9ab;border-radius:12px;padding:14px 16px">
+              <span class="material-symbols-rounded" aria-hidden="true" style="font-size:22px;color:#8a6a1d;flex:none">replay</span>
+              <div>
+                <p style="margin:0 0 3px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;color:#5f4a12">Si el Coordinador rechaza</p>
+                <p style="margin:0;font-size:14px;line-height:1.6;color:#5c4a15;text-wrap:pretty">{{ selRechazo }}</p>
+              </div>
+            </div>
+          </sc-if>
+          <section>
+            <h3 style="margin:0 0 8px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5f696f">Conexiones</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div>
+                <p style="margin:0 0 6px;font-size:12px;font-weight:600;color:#7c878e;display:flex;align-items:center;gap:4px"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:16px">login</span>Depende de</p>
+                <sc-if value="{{ selNoDeps }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:13px;color:#7c878e">Inicio del proceso</p></sc-if>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <sc-for list="{{ selDeps }}" as="c" hint-placeholder-count="1">
+                    <button onClick="{{ c.go }}" style="display:flex;align-items:center;gap:6px;text-align:left;border:1px solid #cdd4d7;background:#ffffff;border-radius:8px;padding:8px 10px;font-size:13px;font-weight:600;color:#008089;cursor:pointer;min-height:40px" style-hover="border-color:#009ca6;background:#e6f5f6"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:16px">my_location</span><span style="flex:1">{{ c.label }}</span></button>
+                  </sc-for>
+                </div>
+              </div>
+              <div>
+                <p style="margin:0 0 6px;font-size:12px;font-weight:600;color:#7c878e;display:flex;align-items:center;gap:4px"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:16px">logout</span>Alimenta a</p>
+                <sc-if value="{{ selNoOuts }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:13px;color:#7c878e">Fin del proceso</p></sc-if>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <sc-for list="{{ selOuts }}" as="c" hint-placeholder-count="1">
+                    <button onClick="{{ c.go }}" style="display:flex;align-items:center;gap:6px;text-align:left;border:1px solid #cdd4d7;background:#ffffff;border-radius:8px;padding:8px 10px;font-size:13px;font-weight:600;color:#008089;cursor:pointer;min-height:40px" style-hover="border-color:#009ca6;background:#e6f5f6"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:16px">my_location</span><span style="flex:1">{{ c.label }}</span></button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h3 style="margin:0 0 4px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#5f696f">Recursos</h3>
+            <sc-if value="{{ selNoRes }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:13px;color:#7c878e">Este punto no tiene guía propia; la guía corresponde al paso al que pertenece.</p></sc-if>
+            <sc-if value="{{ selHasRes }}" hint-placeholder-val="{{ true }}"><p style="margin:0 0 10px;font-size:12.5px;color:#7c878e;display:flex;align-items:center;gap:5px"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:15px">open_in_new</span>Los recursos disponibles se abren en una pestaña nueva.</p></sc-if>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ selRes }}" as="r" hint-placeholder-count="2">
+                <sc-if value="{{ r.avail }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ r.url }}" target="_blank" rel="noopener" style="display:flex;gap:12px;align-items:center;padding:12px;background:#ffffff;border:1px solid #e2e6e8;border-radius:12px;text-decoration:none;box-shadow:0 1px 3px rgba(28,40,56,0.05)" style-hover="border-color:#009ca6;box-shadow:0 4px 12px rgba(28,40,56,0.10)">
+                    <sc-if value="{{ r.isPdf }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="flex:none;width:46px;height:46px;border-radius:10px;background:#e6f5f6;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:26px;color:#00646b">picture_as_pdf</span></span></sc-if>
+                    <sc-if value="{{ r.isVideo }}" hint-placeholder-val="{{ false }}">
+                      <span aria-hidden="true" style="flex:none;width:46px;height:46px;border-radius:10px;background:#e6f5f6;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:26px;color:#00646b">smart_display</span></span>
+                    </sc-if>
+                    <span style="flex:1;min-width:0">
+                      <span style="display:block;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;line-height:1.3;color:#1c2838">{{ r.title }}</span>
+                      <span style="display:block;margin-top:3px;font-size:12px;color:#5f696f">{{ r.meta }}</span>
+                    </span>
+                    <span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;color:#008089;flex:none">open_in_new</span>
+                  </a>
+                </sc-if>
+                <sc-if value="{{ r.prep }}" hint-placeholder-val="{{ false }}">
+                  <div aria-disabled="true" style="display:flex;gap:12px;align-items:center;padding:12px;background:#fafafa;border:1px dashed #cdd4d7;border-radius:12px;opacity:0.85">
+                    <span aria-hidden="true" style="flex:none;width:46px;height:46px;border-radius:10px;background:#f1f3f4;display:flex;align-items:center;justify-content:center"><span class="material-symbols-rounded" style="font-size:26px;color:#7c878e">{{ r.icon }}</span></span>
+                    <span style="flex:1;min-width:0">
+                      <span style="display:block;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;line-height:1.3;color:#5f696f">{{ r.title }}</span>
+                      <span style="display:block;margin-top:3px;font-size:12px;color:#7c878e">{{ r.meta }}</span>
+                    </span>
+                    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#5f696f;background:#e2e6e8;padding:4px 8px;border-radius:999px;white-space:nowrap"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:14px">hourglass_top</span>En preparación</span>
+                  </div>
+                </sc-if>
+              </sc-for>
+            </div>
+          </section>
+        </div>
+        <nav aria-label="Anterior y siguiente en el proceso" style="display:flex;gap:10px;padding:12px 16px;border-top:1px solid #e2e6e8;background:#fafafa">
+          <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ goPrev }}" style="flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #cdd4d7;border-radius:10px;padding:8px 12px;text-align:left;cursor:pointer;min-height:52px" style-hover="border-color:#009ca6;background:#e6f5f6">
+              <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#5f696f">arrow_back</span>
+              <span style="min-width:0"><span style="display:block;font-size:10.5px;color:#7c878e;font-weight:600;letter-spacing:0.04em;text-transform:uppercase">Anterior</span><span style="display:block;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;color:#1c2838;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ prevLabel }}</span></span>
+            </button>
+          </sc-if>
+          <sc-if value="{{ hasNext }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ goNext }}" style="flex:1;min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:8px;background:#009ca6;border:none;border-radius:10px;padding:8px 12px;text-align:right;cursor:pointer;min-height:52px" style-hover="background:#008089" style-active="background:#00646b">
+              <span style="min-width:0"><span style="display:block;font-size:10.5px;color:#b9e3e6;font-weight:600;letter-spacing:0.04em;text-transform:uppercase">Siguiente</span><span style="display:block;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;color:#ffffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ nextLabel }}</span></span>
+              <span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px;color:#ffffff">arrow_forward</span>
+            </button>
+          </sc-if>
+        </nav>
+      </aside>
+    </sc-if>
+
+    <sc-if value="{{ glossaryOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeGlossary }}" style="position:absolute;inset:0;background:rgba(28,40,56,0.5);z-index:80;display:flex;align-items:center;justify-content:center">
+        <div role="dialog" aria-modal="true" aria-label="Glosario" ref="{{ glossRef }}" tabIndex="-1" onClick="{{ stop }}" style="width:560px;max-height:80%;background:#ffffff;border-radius:14px;box-shadow:0 16px 40px rgba(28,40,56,0.25);display:flex;flex-direction:column;overflow:hidden;outline:none">
+          <div style="display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid #e2e6e8">
+            <span class="material-symbols-rounded" aria-hidden="true" style="font-size:22px;color:#008089">menu_book</span>
+            <h2 style="margin:0;flex:1;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:20px;color:#1c2838">Glosario rápido</h2>
+            <button onClick="{{ closeGlossary }}" aria-label="Cerrar glosario" style="width:40px;height:40px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#5f696f;display:flex;align-items:center;justify-content:center" style-hover="background:#f1f3f4;color:#1c2838"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:22px">close</span></button>
+          </div>
+          <div style="overflow-y:auto;padding:8px 20px 20px">
+            <sc-for list="{{ glossary }}" as="g" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:150px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid #f1f3f4">
+                <span style="font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;color:#1c2838">{{ g.term }}</span>
+                <span style="font-size:14px;line-height:1.55;color:#454d52">{{ g.def }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <footer id="ayuda" style="flex:none;background:#093d53;color:#fafafa;padding:0 20px;height:56px;display:flex;align-items:center;gap:16px;position:relative;z-index:60">
+    <span class="material-symbols-rounded" aria-hidden="true" style="font-size:24px;color:#7fccd1">support_agent</span>
+    <p style="margin:0;font-size:14px;color:#ffffff"><strong style="font-family:'Titillium Web',sans-serif;font-weight:700">¿Alguna duda?</strong> <span style="color:#c9d2da">Entersys acompaña el proceso. Se responde solamente en horario hábil.</span></p>
+    <span style="flex:1"></span>
+    <a href="mailto:{{ correo }}" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:8px;padding:0 12px;height:38px;color:#ffffff;text-decoration:none;font-weight:600;font-size:13.5px;white-space:nowrap" style-hover="background:rgba(255,255,255,0.18);color:#ffffff"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;color:#7fccd1">mail</span>{{ correo }}</a>
+    <a href="{{ waLink }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.22);border-radius:8px;padding:0 12px;height:38px;color:#ffffff;text-decoration:none;font-weight:600;font-size:13.5px;white-space:nowrap" aria-label="WhatsApp {{ whatsapp }}" style-hover="background:rgba(255,255,255,0.18);color:#ffffff"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px;color:#7fccd1">chat</span>WA {{ whatsapp }}</a>
+    <span style="width:1px;height:24px;background:rgba(255,255,255,0.22)"></span>
+    <span style="font-size:12.5px;color:#c9d2da">Publicado y mantenido por Entersys · Última revisión: {{ fecha }}</span>
+  </footer>
+  <sc-if value="{{ tourOn }}" hint-placeholder-val="{{ false }}">
+    <div ref="{{ tourRef }}" tabIndex="-1" role="dialog" aria-modal="true" aria-label="Tutorial del mapa" onKeyDown="{{ onTourKey }}" style="position:fixed;inset:0;z-index:200;outline:none">
+      <sc-if value="{{ tourHasTarget }}" hint-placeholder-val="{{ false }}">
+        <div aria-hidden="true" style="position:fixed;left:{{ tourSpotX }}px;top:{{ tourSpotY }}px;width:{{ tourSpotW }}px;height:{{ tourSpotH }}px;border-radius:12px;box-shadow:0 0 0 9999px rgba(28,40,56,0.6),0 0 0 3px #009ca6;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none"></div>
+      </sc-if>
+      <sc-if value="{{ tourNoTarget }}" hint-placeholder-val="{{ true }}">
+        <div aria-hidden="true" style="position:fixed;inset:0;background:rgba(28,40,56,0.6)"></div>
+      </sc-if>
+      <div style="position:fixed;left:{{ tourCardX }}px;top:{{ tourCardY }}px;width:380px;background:#ffffff;border-radius:14px;box-shadow:0 16px 40px rgba(28,40,56,0.3);padding:20px 20px 16px;display:flex;flex-direction:column;gap:10px;transition:left .3s cubic-bezier(.4,0,.2,1),top .3s cubic-bezier(.4,0,.2,1)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span aria-hidden="true" style="width:34px;height:34px;border-radius:10px;background:#e6f5f6;display:inline-flex;align-items:center;justify-content:center;flex:none"><span class="material-symbols-rounded" style="font-size:20px;color:#00646b">{{ tourIcon }}</span></span>
+          <span style="flex:1;font-family:'Titillium Web',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#7c878e">Tutorial · {{ tourCount }}</span>
+          <button onClick="{{ endTour }}" aria-label="Cerrar tutorial" style="width:36px;height:36px;border:none;background:transparent;border-radius:8px;cursor:pointer;color:#5f696f;display:flex;align-items:center;justify-content:center" style-hover="background:#f1f3f4;color:#1c2838"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:20px">close</span></button>
+        </div>
+        <h2 style="margin:0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:20px;line-height:1.2;color:#1c2838;text-wrap:pretty">{{ tourTitle }}</h2>
+        <p style="margin:0;font-size:14.5px;line-height:1.6;color:#454d52;text-wrap:pretty">{{ tourText }}</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+          <sc-for list="{{ tourDots }}" as="d" hint-placeholder-count="9"><span aria-hidden="true" style="width:{{ d.w }}px;height:6px;border-radius:999px;background:{{ d.bg }};transition:all .2s"></span></sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+          <button onClick="{{ endTour }}" style="border:none;background:transparent;color:#5f696f;font-weight:600;font-size:13.5px;cursor:pointer;padding:8px 6px;border-radius:8px;min-height:40px" style-hover="background:#f1f3f4;color:#1c2838">Omitir</button>
+          <span style="flex:1"></span>
+          <sc-if value="{{ tourHasPrev }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ tourPrev }}" style="display:inline-flex;align-items:center;gap:4px;border:1px solid #cdd4d7;background:#ffffff;color:#1c2838;font-weight:600;font-size:13.5px;cursor:pointer;padding:0 12px;height:40px;border-radius:8px" style-hover="background:#f1f3f4"><span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px">arrow_back</span>Anterior</button>
+          </sc-if>
+          <button onClick="{{ tourNext }}" style="display:inline-flex;align-items:center;gap:6px;border:none;background:#009ca6;color:#ffffff;font-weight:600;font-size:14px;font-family:'Titillium Web',sans-serif;cursor:pointer;padding:0 16px;height:40px;border-radius:8px" style-hover="background:#008089">{{ tourNextLabel }}<span class="material-symbols-rounded" aria-hidden="true" style="font-size:18px">{{ tourNextIcon }}</span></button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;contactoCorreo&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;terceros@entersys.mx&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contacto&quot;},&quot;contactoWhatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;+52 55 1234 5678&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contacto&quot;},&quot;fechaRevision&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;septiembre de 2026&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Vigencia&quot;},&quot;urlPortalContratistas&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://wiki.entersys.mx/es/kof/terceros/kof&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Enlaces&quot;},&quot;urlProcedimientos&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Procedimientos KOF.dc.html&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Enlaces&quot;},&quot;urlProcedimientosPublica&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Enlaces&quot;},&quot;mostrarCiclosRechazo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Lienzo&quot;},&quot;mostrarReticula&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Lienzo&quot;}}">
+const NW = 220, NH = 124, DW = 150;
+const YT = (id, i) => "https://www.youtube.com/watch?v=" + id + "&list=PL8fOd8ZLdcVZJbKU4qHFf94MVRMjHC--p&index=" + i;
+const DRIVE = id => "https://drive.google.com/file/d/" + id + "/view";
+const vid = (title, id, i) => ({ type: "video", title, url: YT(id, i), thumb: "https://img.youtube.com/vi/" + id + "/hqdefault.jpg", status: "disponible" });
+const pdf = (title, id) => ({ type: "pdf", title, url: DRIVE(id), status: "disponible" });
+const prep = (type, title) => ({ type, title, status: "preparacion" });
+
+// ── Recursos por nodo: única estructura editable. Agrega enlaces aquí conforme se publiquen. ──
+const PREP_ONB = [prep("video", "Video: Certificación de Onboarding"), prep("pdf", "Manual: Certificación de Onboarding")];
+const PREP_CRED = [prep("video", "Video: Credencial Digital"), prep("pdf", "Manual: Credencial Digital")];
+const RECURSOS = {
+  start: [prep("video", "Video: Clasificación del trabajo"), prep("pdf", "Guía: Clasificación del trabajo")],
+  d_alto: [], fuera1: [], d_rut: [], fuera2: [],
+  registro: PREP_ONB, foto: PREP_ONB, modulos: PREP_ONB, evaluacion: PREP_ONB, d_aprobo: [], d_intentos: [], bloqueo: [], certificado: PREP_ONB,
+  p1: [pdf("Manual: Documentación General", "1sBIQhZTi6zmhuPUBTk4z_FGkIdMhJLSz"), vid("Video: Documentación General", "taCq6OkOwsA", 2), vid("Video: Consulta y actualización", "O9RJa_kuC2c", 3)],
+  p2: [pdf("Manual: Alta de Proyecto", "1YzQI_Pf6OpTVe1fhRBIq7uMsqSJrVNky"), vid("Video: Alta de Proyecto", "GcGVEcU6BwY", 4)],
+  p3: [pdf("Manual: Listado de Personal", "1AWz4LG6HOuJOLFJYsTYmXNBoMCsG6H_o"), vid("Video: Listado de Personal", "q9p7v_QiL_s", 5), vid("Video: Asociar colaboradores al proyecto", "W-AdqZJ8XuM", 6)],
+  asociar: [vid("Video: Asociar colaboradores al proyecto", "W-AdqZJ8XuM", 6)],
+  cred1: PREP_CRED, cred2: PREP_CRED, cred3: PREP_CRED, cred4: PREP_CRED,
+  p4: [pdf("Manual: Alcance y Procedimiento Operativo", "1n2yMzAJHDwswIy4k1dto13B49q30HTwZ"), vid("Video: Alcance / Procedimiento Operativo", "DB0poqi-gVA", 7), vid("Video: Actualización y consulta", "CORVpZmIPYM", 8)],
+  p5: [pdf("Manual: Análisis de Riesgos IPERC", "12CFy6Do719QnHtlvLskLYNk6t97rphHs"), vid("Video: Matriz IPERC", "HFU5EzbRy7o", 9)],
+  p6: [pdf("Manual: Plan de Rescate", "1YX8vH_tZg77MKRITpTuVx7Bb3jakPFH3"), vid("Video: Plan de Rescate", "C5ZzssfDs74", 10), vid("Video: Actualización y consulta", "Qq-GfJneDNo", 11)],
+  p7: [prep("video", "Video: Evaluación de Precalificación"), prep("pdf", "Manual: Evaluación de Precalificación")],
+  habilitado: [],
+  permisos: [pdf("Manual: Permisos de Trabajo", "1hxdk-JNP6qLBBnIaJq8KbPcNJ6y2JONv"), vid("Video: Permisos de Trabajo", "usvORZPq9Dg", 12)],
+  diarias: [prep("video", "Video: Evaluaciones diarias"), prep("pdf", "Guía: Evaluaciones diarias")],
+  final: [prep("video", "Video: Evaluación final"), prep("pdf", "Guía: Evaluación final")],
+  cerrado: []
+};
+
+const ACTORS = {
+  contratista: { label: "Contratista / Colaborador", chip: "Contratista", short: "Contratista", icon: "engineering", bg: "#ffffff", border: "#7c878e", chipBg: "#f1f3f4", chipFg: "#454d52", borderStyle: "solid" },
+  coordinador: { label: "Coordinador de Seguridad", chip: "Coordinador valida", short: "Coordinador", icon: "verified_user", bg: "#ffffff", border: "#009ca6", chipBg: "#e6f5f6", chipFg: "#00646b", borderStyle: "solid" },
+  sistema: { label: "Sistema / Plataforma", chip: "Sistema", short: "Sistema", icon: "settings_suggest", bg: "#ffffff", border: "#1c2838", chipBg: "#1c2838", chipFg: "#ffffff", borderStyle: "solid" },
+  resultado: { label: "Resultado / Punto de conexión", chip: "Resultado", short: "Resultado", icon: "flag", bg: "#fdfaf3", border: "#c2a56d", chipBg: "#f2ead9", chipFg: "#5f4a12", borderStyle: "solid" },
+  fuera: { label: "Fuera del alcance actual", chip: "Fuera de alcance", short: "Fuera de alcance", icon: "block", bg: "#fafafa", border: "#a7b1b6", chipBg: "#f1f3f4", chipFg: "#5f696f", borderStyle: "dashed" },
+  decision: { label: "Decisión (sí / no)", chip: "Decisión", short: "Decisión", icon: "alt_route", bg: "#ffffff", border: "#c2a56d", chipBg: "#f2ead9", chipFg: "#5f4a12", borderStyle: "solid" }
+};
+
+const STATIONS = [
+  { id: "s1", n: 1, short: "Onboarding", label: "On Boarding", note: "Obligatorio para todo tercero contratista que ingresa a planta" },
+  { id: "s0", n: 0, short: "Clasificación", label: "Clasificación del trabajo", note: "Punto de entrada: sólo trabajos de alto riesgo no rutinarios" },
+  { id: "s2", n: 2, short: "Doc. / Alta", label: "Documentación general / Alta de proyecto", note: "Documentación pre-ejecución · Fase 1" },
+  { id: "s3", n: 3, short: "Personal", label: "Listado de personal (asociar colaboradores) / Credencialización", note: "La credencial es rama paralela: no es requisito para la etapa 4" },
+  { id: "s4", n: 4, short: "Alcance", label: "Alcance / Procedimiento Operativo / IPERC", note: "Documentación pre-ejecución · Fase 1" },
+  { id: "s5", n: 5, short: "Rescate", label: "Plan de rescate / Precalificación Out Side", note: "Al aprobarse la Precalificación, el proyecto queda habilitado para la Fase 2" },
+  { id: "s6", n: 6, short: "Permisos", label: "Permisos de trabajo / Evaluación diaria / Evaluación final", note: "Ejecución en sitio y cierre · Fase 2" }
+];
+
+const RECHAZO = "El contratista corrige y reenvía. No puede avanzar al siguiente paso hasta la aprobación del Coordinador.";
+const COORD = "Técnico o Coordinador de Seguridad de la unidad operativa";
+const Y = 320, YD = 307;
+const ST_OF = { registro: "s1", foto: "s1", modulos: "s1", evaluacion: "s1", d_aprobo: "s1", d_intentos: "s1", bloqueo: "s1", certificado: "s1", start: "s0", d_alto: "s0", fuera1: "s0", d_rut: "s0", fuera2: "s0", p1: "s2", p2: "s2", p3: "s3", asociar: "s3", cred1: "s3", cred2: "s3", cred3: "s3", cred4: "s3", p4: "s4", p5: "s4", p6: "s5", p7: "s5", habilitado: "s5", permisos: "s6", diarias: "s6", final: "s6", cerrado: "s6" };
+const OFF = { start: 80, d_alto: 80, fuera1: 80, d_rut: 80, fuera2: 80, p1: 160, p2: 160, p3: 240, asociar: 240, cred1: 240, cred2: 240, cred3: 240, cred4: 240, p4: 320, p5: 420, p6: 500, p7: 500, habilitado: 600, permisos: 760, diarias: 760, final: 760, cerrado: 760 };
+const NODES = [
+  { id: "registro", st: "s1", actor: "contratista", x: 40, y: Y, label: "Registro", title: "Registro en la plataforma", tag: "Onboarding · 1",
+    body: "Es el primer proceso que debe registrar todo tercero contratista que ingrese a planta. El colaborador se registra en la plataforma con sus datos personales: RFC y nombre completo.", ejecuta: "Colaborador", valida: "—" },
+  { id: "foto", st: "s1", actor: "contratista", x: 300, y: Y, label: "Fotografía de verificación", title: "Fotografía de verificación", tag: "Onboarding · 2",
+    body: "Toma una fotografía de verificación antes de iniciar la evaluación, para validar que quien presenta el curso es una persona real (no un tercero).", ejecuta: "Colaborador", valida: "—" },
+  { id: "modulos", st: "s1", actor: "contratista", x: 560, y: Y, label: "Cursar los 3 módulos", title: "Cursar los 3 módulos obligatorios", tag: "Onboarding · 3",
+    body: "Cursa los 3 módulos obligatorios: Ambiental, Seguridad e Inocuidad. Cada módulo tiene su propia sección de evaluación.", ejecuta: "Colaborador", valida: "—" },
+  { id: "evaluacion", st: "s1", actor: "sistema", x: 820, y: Y, label: "Evaluación", title: "Evaluación de los 3 módulos", tag: "Onboarding · 4",
+    body: "El sistema evalúa las 3 secciones. Para aprobar el curso completo se deben aprobar las 3 secciones de los 3 módulos. El colaborador cuenta con 3 intentos para aprobar el curso completo.", ejecuta: "Sistema / Plataforma", valida: "Sistema / Plataforma (automático)" },
+  { id: "d_aprobo", st: "s1", actor: "decision", x: 1090, y: YD, label: "¿Aprobó?", title: "¿Aprobó las 3 secciones de los 3 módulos?",
+    body: "Para aprobar el curso completo se deben aprobar las 3 secciones de los 3 módulos. Al aprobar, el sistema emite el Certificado de Onboarding.", ejecuta: "Sistema / Plataforma", valida: "—" },
+  { id: "d_intentos", st: "s1", actor: "decision", x: 1090, y: 520, label: "¿Le quedan intentos?", title: "¿Le quedan intentos?",
+    body: "El colaborador cuenta con 3 intentos para aprobar el curso completo. Si le quedan intentos, vuelve a presentar el curso.", ejecuta: "Sistema / Plataforma", valida: "—" },
+  { id: "bloqueo", st: "s1", actor: "sistema", x: 1055, y: 720, label: "Bloqueo automático de 6 meses", title: "Bloqueo automático de 6 meses",
+    body: "Si reprueba las 3 veces, el sistema genera automáticamente un bloqueo de 6 meses, durante el cual no puede volver a presentar el curso.", ejecuta: "Sistema / Plataforma", valida: "—" },
+  { id: "certificado", st: "s1", actor: "resultado", x: 1330, y: Y, label: "Certificado de Onboarding", title: "Certificado de Onboarding", tag: "Resultado",
+    body: "Al aprobar, el sistema emite el Certificado de Onboarding, que alimenta tanto el Listado de Personal (Paso 3) como la Generación de Credencial Digital. Su aprobación es uno de los dos requisitos para que el sistema genere la Credencial Digital del colaborador.", ejecuta: "Sistema / Plataforma", valida: "—" },
+  { id: "start", st: "s0", actor: "resultado", x: 1630, y: Y, label: "Trabajo a ejecutar en KOF", title: "Trabajo a ejecutar en instalaciones de KOF", tag: "Punto de entrada",
+    body: "Con el Onboarding completado, el contratista identifica el trabajo a ejecutar. KOF clasifica los trabajos en riesgo bajo, medio y alto. Los trabajos de alto riesgo se gestionan a través de la plataforma; dentro de estos existen trabajos rutinarios y no rutinarios.", ejecuta: "KOF (clasificación del trabajo)", valida: "—" },
+  { id: "d_alto", st: "s0", actor: "decision", x: 1910, y: YD, label: "¿Es de riesgo alto?", title: "¿Es un trabajo de riesgo alto?",
+    body: "KOF clasifica los trabajos en riesgo bajo, medio y alto. Sólo los trabajos de alto riesgo se gestionan a través de la plataforma.", ejecuta: "KOF (clasificación del trabajo)", valida: "—" },
+  { id: "fuera1", st: "s0", actor: "fuera", x: 1875, y: 520, label: "Riesgo bajo o medio", title: "Trabajo de riesgo bajo o medio", tag: "Fuera del alcance actual",
+    body: "Los trabajos de riesgo bajo o medio hoy no se gestionan dentro de la plataforma.", ejecuta: "—", valida: "—" },
+  { id: "d_rut", st: "s0", actor: "decision", x: 2150, y: YD, label: "¿Es rutinario?", title: "¿Es un trabajo rutinario?",
+    body: "Dentro de los trabajos de alto riesgo existen trabajos rutinarios y no rutinarios. Actualmente, sólo los trabajos de alto riesgo no rutinarios deben registrarse en la plataforma.", ejecuta: "KOF (clasificación del trabajo)", valida: "—" },
+  { id: "fuera2", st: "s0", actor: "fuera", x: 2115, y: 520, label: "Alto riesgo rutinario", title: "Trabajo de alto riesgo rutinario", tag: "Fuera del alcance actual",
+    body: "Los trabajos de alto riesgo rutinarios hoy no se registran en la plataforma.", ejecuta: "—", valida: "—" },
+  { id: "p1", st: "s2", actor: "coordinador", actors: ["contratista", "coordinador"], interviene: true, x: 2370, y: Y, label: "Documentación General", title: "Documentación General de la empresa contratista", tag: "Paso 1",
+    body: "El contratista registra a su empresa y sube la documentación específica de la empresa contratista. El Técnico o Coordinador de Seguridad de la unidad operativa correspondiente la valida.",
+    ejecuta: "Contratista", valida: COORD,
+    revisas: "Que la empresa haya subido los siete documentos y que cada uno acredite lo que indica la tabla. La identidad de quien firma la declaración jurada se valida con la identificación del representante legal.",
+    docsCol2: "Para qué sirve", docs: [
+      ["RFC", "Identifica fiscalmente a la empresa contratista."],
+      ["Cédula de determinación de cuota", "Acredita el cálculo de cuotas obrero-patronales vigente."],
+      ["Comprobante de pago de SUA", "Acredita el pago del Sistema Único de Autodeterminación."],
+      ["Identificación del representante legal", "Valida que la persona que firma y valida la declaración jurada es efectivamente el representante legal responsable."],
+      ["Opinión de cumplimiento del IMSS", "Acredita que la empresa está al corriente de sus obligaciones ante el IMSS."],
+      ["Última declaración de grado de riesgo", "Acredita el grado de riesgo de la empresa registrado ante el IMSS."],
+      ["Declaración jurada", "Documento firmado y nombrado por el representante legal responsable, cuya identidad se valida con su identificación."]
+    ], rechazo: RECHAZO },
+  { id: "p2", st: "s2", actor: "coordinador", actors: ["contratista", "coordinador"], interviene: true, x: 2630, y: Y, label: "Alta de Proyecto", title: "Alta de Proyecto", tag: "Paso 2",
+    body: "El contratista da de alta el proyecto, indicando la unidad operativa y la orden de compra correspondiente.", ejecuta: "Contratista", valida: COORD,
+    revisas: "Que la Orden de Compra y el RFC de la empresa coincidan con la unidad operativa antes de aprobar el registro.", keywords: "Orden de Compra OC unidad operativa RFC", rechazo: RECHAZO },
+  { id: "p3", st: "s2", actor: "coordinador", actors: ["contratista", "coordinador", "sistema"], interviene: true, x: 2890, y: Y, label: "Listado de Personal", title: "Listado de Personal", tag: "Paso 3",
+    body: "Por cada colaborador, el contratista registra su Número de Seguro Social (NSS) y nombre, junto con su documentación. El Certificado de Onboarding se obtiene automáticamente: el sistema hace un match por NSS + RFC contra el módulo de Onboarding. Una vez validado, el contratista asocia a los colaboradores al proyecto.",
+    ejecuta: "Contratista (el sistema hace el match del Certificado de Onboarding)", valida: COORD,
+    revisas: "La documentación de cada colaborador registrado (ver tabla). El Certificado de Onboarding lo toma el sistema automáticamente si ya está aprobado, sin volver a solicitarlo. Cuando el colaborador tiene el Onboarding aprobado y su documentación de este paso validada, el sistema genera su Credencial Digital.",
+    docsCol2: "Nota", docs: [
+      ["NSS y nombre", "Número de Seguro Social y nombre del colaborador."],
+      ["DC3 asociado(s) al colaborador", "Constancias de competencias o habilidades laborales."],
+      ["Pago de seguro social", "Vigencia de aseguramiento del colaborador."],
+      ["Pago de SUA", "Comprobante correspondiente al colaborador."],
+      ["Credencial de la empresa contratista", "Identificación del colaborador como personal de la empresa."],
+      ["Certificado de Onboarding", "Se obtiene automáticamente: el sistema hace un match por NSS + RFC contra el módulo de Onboarding; si ya está aprobado, toma los datos directamente sin volver a solicitarlo."],
+      ["Certificado médico", "Aptitud médica del colaborador."],
+      ["Antidoping", "Resultado del examen antidoping del colaborador."]
+    ], rechazo: RECHAZO },
+  { id: "asociar", st: "s2", actor: "contratista", x: 3150, y: Y, label: "Asociar colaboradores al proyecto", title: "Asociar colaboradores al proyecto",
+    body: "Una vez validado el Listado de Personal, el contratista asocia a los colaboradores al proyecto.", ejecuta: "Contratista", valida: "—" },
+  { id: "cred1", st: "s3", actor: "sistema", x: 2890, y: 620, label: "Verificación continua", title: "Verificación continua de requisitos", tag: "Credencial · 1",
+    body: "El sistema verifica de forma continua si un colaborador cumple ambos criterios: Onboarding aprobado + documentación de personal validada. Si falta cualquiera de los dos, la credencial no se genera.", ejecuta: "Sistema / Plataforma", valida: "Sistema / Plataforma (automático)" },
+  { id: "cred2", st: "s3", actor: "sistema", x: 3150, y: 620, label: "Generación automática", title: "Generación automática de la credencial", tag: "Credencial · 2",
+    body: "En cuanto se cumplen ambos criterios, el sistema genera automáticamente la credencial digital, sin intervención manual adicional.", ejecuta: "Sistema / Plataforma", valida: "—" },
+  { id: "cred3", st: "s3", actor: "sistema", x: 3150, y: 860, label: "Enlace en informe", title: "Enlace publicado en informe", tag: "Credencial · 3",
+    body: "El sistema publica un enlace dentro de un informe, visible en dos lugares: el módulo del Tercero Contratista y el módulo del Coordinador de Seguridad.", ejecuta: "Sistema / Plataforma", valida: "—" },
+  { id: "cred4", st: "s3", actor: "resultado", x: 2890, y: 860, label: "Credencial en PDF 6x9", title: "Credencial Digital en PDF 6x9", tag: "Resultado",
+    body: "Al abrir el enlace se visualiza la credencial digital, la cual puede descargarse en formato PDF, en tamaño 6x9 conforme al formato requerido por KOF, para su impresión y uso dentro de sitio.", ejecuta: "Sistema / Plataforma", valida: "—", sample: true },
+  { id: "p4", st: "s4", actor: "coordinador", actors: ["contratista", "coordinador"], interviene: true, x: 3410, y: Y, label: "Alcance / Procedimiento Operativo", title: "Alcance / Procedimiento Operativo", tag: "Paso 4",
+    body: "El contratista describe los pasos de las actividades que se van a ejecutar. Este alcance detona automáticamente los pasos base sobre los que se construye la Matriz de Análisis de Riesgo del Paso 5.", ejecuta: "Contratista", valida: COORD,
+    revisas: "Los pasos de las actividades que se van a ejecutar: sobre ellos se construye la Matriz de Análisis de Riesgo del Paso 5.", rechazo: RECHAZO },
+  { id: "p5", st: "s4", actor: "coordinador", actors: ["contratista", "coordinador"], interviene: true, x: 3670, y: Y, label: "Matriz de Análisis de Riesgo", title: "Matriz de Análisis de Riesgo", tag: "Paso 5",
+    body: "El contratista completa la matriz de análisis, con base en los pasos definidos en el alcance: identifica los riesgos y peligros de cada paso de la actividad, registra los controles a implementar para mitigarlos y asigna al personal responsable de cada paso de la ejecución.", ejecuta: "Contratista", valida: COORD,
+    revisas: "Que, para cada paso del alcance, estén identificados los riesgos y peligros, registrados los controles para mitigarlos y asignado el personal responsable de cada paso de la ejecución.", rechazo: RECHAZO },
+  { id: "p6", st: "s4", actor: "coordinador", actors: ["contratista", "coordinador"], interviene: true, x: 3930, y: Y, label: "Plan de Rescate", title: "Plan de Rescate", tag: "Paso 6",
+    body: "El contratista registra el plan de rescate aplicable al trabajo de alto riesgo.", ejecuta: "Contratista", valida: COORD,
+    revisas: "El plan de rescate aplicable al trabajo de alto riesgo.", rechazo: RECHAZO },
+  { id: "p7", st: "s4", actor: "coordinador", actors: ["contratista", "coordinador"], interviene: true, x: 4190, y: Y, label: "Evaluación de Precalificación", title: "Evaluación de Precalificación", tag: "Paso 7",
+    body: "El contratista completa una serie de formularios de precalificación, mediante los cuales se valida que se cumplen todos los requisitos necesarios para ejecutar el trabajo de alto riesgo de forma segura. Sólo al aprobarse el Paso 7 el proyecto queda habilitado para su ejecución en sitio (Fase 2).", ejecuta: "Contratista", valida: COORD,
+    revisas: "Los formularios de precalificación: que se cumplan todos los requisitos necesarios para ejecutar el trabajo de alto riesgo de forma segura. Su aprobación habilita el proyecto para la Fase 2.", rechazo: RECHAZO },
+  { id: "habilitado", st: "s4", actor: "resultado", x: 4450, y: Y, label: "Proyecto habilitado para Fase 2", title: "Proyecto habilitado para ejecución en sitio (Fase 2)", tag: "Resultado",
+    body: "Sólo al aprobarse el Paso 7 el proyecto queda habilitado para su ejecución en sitio (Fase 2). Con el proyecto habilitado, la gestión documental continúa durante la ejecución del trabajo y hasta su cierre.", ejecuta: "Sistema / Plataforma", valida: "—" },
+  { id: "permisos", st: "s5", actor: "coordinador", actors: ["contratista", "coordinador"], interviene: true, x: 4710, y: 220, label: "Permisos de trabajo", title: "Permisos de trabajo", tag: "Fase 2",
+    body: "En sitio, el contratista va subiendo a la plataforma los permisos de trabajo requeridos para cada actividad; el Técnico o Coordinador de Seguridad los valida.", ejecuta: "Contratista (sube en sitio)", valida: COORD,
+    revisas: "Los permisos de trabajo requeridos para cada actividad, conforme el contratista los va subiendo en sitio.", rechazo: "El contratista corrige y reenvía el permiso de trabajo de esa actividad." },
+  { id: "diarias", st: "s5", actor: "coordinador", actors: ["coordinador"], interviene: true, x: 4710, y: 440, label: "Evaluaciones diarias", title: "Evaluaciones diarias", tag: "Fase 2",
+    body: "Se realizan mientras continúa la ejecución del trabajo, en paralelo a la gestión de permisos.", ejecuta: COORD, valida: COORD,
+    revisas: "Las evaluaciones diarias mientras continúa la ejecución del trabajo, en paralelo a la gestión de permisos." },
+  { id: "final", st: "s5", actor: "coordinador", actors: ["coordinador"], interviene: true, x: 5050, y: Y, label: "Evaluación final", title: "Evaluación final", tag: "Fase 2 · Cierre",
+    body: "Se realiza al cierre del proyecto, dando por finalizado el desarrollo de los requisitos documentales del trabajo de alto riesgo.", ejecuta: COORD, valida: COORD,
+    revisas: "Al cierre del proyecto, que el desarrollo de los requisitos documentales del trabajo de alto riesgo quede finalizado." },
+  { id: "cerrado", st: "s5", actor: "resultado", x: 5310, y: Y, label: "Proyecto cerrado", title: "Proyecto cerrado", tag: "Resultado",
+    body: "Con la evaluación final se da por finalizado el desarrollo de los requisitos documentales del trabajo de alto riesgo y el proyecto queda cerrado.", ejecuta: "—", valida: "—" }
+];
+const NODE = Object.fromEntries(NODES.map(n => [n.id, n]));
+NODES.forEach(n => { const d = n.actor === "decision"; n.w = d ? DW : NW; n.h = d ? DW : NH; n.st = ST_OF[n.id]; n.x += OFF[n.id] || 0; if (!n.actors) n.actors = [n.actor]; });
+
+// from, to, fromSide, toSide, type (main|cross|fuera), label
+const EDGES = [
+  ["start", "d_alto", "r", "l"], ["d_alto", "d_rut", "r", "l", "main", "Sí"], ["d_alto", "fuera1", "b", "t", "fuera", "No"],
+  ["d_rut", "p1", "r", "l", "main", "No, es no rutinario"], ["d_rut", "fuera2", "b", "t", "fuera", "Sí, es rutinario"],
+  ["registro", "foto", "r", "l"], ["foto", "modulos", "r", "l"], ["modulos", "evaluacion", "r", "l"], ["evaluacion", "d_aprobo", "r", "l"],
+  ["d_aprobo", "certificado", "r", "l", "main", "Sí"], ["d_aprobo", "d_intentos", "b", "t", "main", "No"],
+  ["d_intentos", "bloqueo", "b", "t", "main", "No"], ["d_intentos", "modulos", "l", "b", "main", "Sí, vuelve a presentar"],
+  ["certificado", "start", "r", "l", "main", "Ingreso a planta"], ["certificado", "p3", "t", "t", "cross", "Match por NSS + RFC"],
+  ["p1", "p2", "r", "l"], ["p2", "p3", "r", "l"], ["p3", "asociar", "r", "l"], ["asociar", "p4", "r", "l"],
+  ["p3", "cred1", "b", "t", "cross", "Documentación de personal validada"], ["certificado", "cred1", "b", "b", "cross", "Onboarding aprobado", 820, 0.7],
+  ["cred1", "cred2", "r", "l"], ["cred2", "cred3", "b", "t"], ["cred3", "cred4", "l", "r"],
+  ["p4", "p5", "r", "l", "main", "Detona pasos base"], ["p5", "p6", "r", "l"], ["p6", "p7", "r", "l"], ["p7", "habilitado", "r", "l", "main", "Aprobado"],
+  ["habilitado", "permisos", "r", "l"], ["habilitado", "diarias", "r", "l"], ["permisos", "final", "r", "l"], ["diarias", "final", "r", "l"], ["final", "cerrado", "r", "l"]
+].map(([from, to, fs, ts, type, label, via, at]) => ({ from, to, fs, ts, type: type || "main", label: label || "", via, at }));
+
+const GLOSSARY = [
+  ["NSS", "Número de Seguro Social del colaborador."], ["RFC", "Registro Federal de Contribuyentes."],
+  ["SUA", "Sistema Único de Autodeterminación (pago de cuotas IMSS/INFONAVIT)."], ["DC3", "Constancia de competencias o habilidades laborales."],
+  ["OC", "Orden de Compra."], ["Trabajo no rutinario", "Actividad de alto riesgo fuera de la operación habitual, que hoy es la única que se registra en la plataforma."]
+];
+const VIEWS = [
+  { id: "todo", label: "Todo", icon: "account_tree" }, { id: "coordinador", label: "Coordinador de Seguridad", icon: "person_check" },
+  { id: "contratista", label: "Contratista", icon: "engineering" }, { id: "sistema", label: "Sistema", icon: "settings_suggest" }
+];
+const CW = 6500, CH = 1080, PANEL_W = 440;
+const TOUR = [
+  { icon: "waving_hand", title: "Bienvenida al mapa del proceso", text: "Este mapa muestra el ciclo completo que sigue un contratista para un trabajo de alto riesgo no rutinario. En dos minutos se explica cómo aprovecharlo." },
+  { icon: "route", target: "[data-tour=estaciones]", title: "Navegación entre etapas", text: "La barra superior recorre las etapas del proceso, en el mismo orden que los procedimientos. La etapa resaltada es la visible en el lienzo; al hacer clic en otra, el mapa se centra en ella." },
+  { icon: "person_check", target: "[data-tour=filtro]", title: "Filtra por interventor", text: "Al elegir “Coordinador de Seguridad” se resaltan todos los puntos donde interviene. Los puntos quedan resaltados y el resto se atenúa para no perder el contexto." },
+  { icon: "ads_click", target: "[data-node-id=p1]", title: "Puntos de validación", text: "Los nodos con la franja turquesa “Interviene el Coordinador” son los pasos que valida el Coordinador de Seguridad. Los rombos son decisiones (sí / no) y las líneas punteadas conectan procesos entre sí. Un clic en cualquier nodo abre su detalle." },
+  { icon: "view_sidebar", target: "[data-tour=panel]", title: "Todo lo del paso, en un panel", text: "Qué sucede, quién ejecuta y quién valida, qué revisa el Coordinador, los documentos involucrados, qué pasa si rechaza y los manuales y videos disponibles. Con Anterior / Siguiente se recorre el proceso sin volver al mapa.", place: "left" },
+  { icon: "pan_tool", target: "[data-tour=zoom]", title: "Desplazamiento por el lienzo", text: "El lienzo se desplaza arrastrando sobre el fondo; la rueda del ratón o estos botones acercan y alejan. “Ajustar a pantalla” devuelve el ciclo completo de un vistazo. Las flechas del teclado también desplazan el mapa." },
+  { icon: "search", target: "[data-tour=busqueda]", title: "Búsqueda por paso o documento", text: "Al escribir “SUA”, “DC3” u “Orden de Compra”, el mapa lleva al nodo correcto con su panel abierto. Útil cuando un contratista pregunta por un documento específico." },
+  { icon: "legend_toggle", target: "[data-tour=leyenda]", title: "Leyenda y glosario", text: "El significado de cada color, forma y línea está en la leyenda. Desde la misma tarjeta se abre el glosario de términos (NSS, RFC, SUA, DC3, OC)." },
+  { icon: "list_alt_check", target: "[data-tour=procedimientos]", title: "Procedimientos y ayuda", text: "Los procedimientos oficiales (PR-KOF-001 a 006) están a un clic en “Procedimientos”. Las dudas se atienden desde la barra inferior. Este tutorial puede repetirse en cualquier momento desde el botón “Tutorial”." }
+];
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const anchor = (n, s) => { const cx = n.x + n.w / 2, cy = n.y + n.h / 2; return s === "l" ? [n.x, cy] : s === "r" ? [n.x + n.w, cy] : s === "t" ? [cx, n.y] : [cx, n.y + n.h]; };
+const dir = s => s === "l" ? [-1, 0] : s === "r" ? [1, 0] : s === "t" ? [0, -1] : [0, 1];
+function bezier(a, b, fs, ts) {
+  const d0 = dir(fs), d1 = dir(ts), dist = Math.hypot(b[0] - a[0], b[1] - a[1]);
+  const k = clamp(dist * 0.4, 30, 170);
+  const c1 = [a[0] + d0[0] * k, a[1] + d0[1] * k], c2 = [b[0] + d1[0] * k, b[1] + d1[1] * k];
+  const mid = [(a[0] + 3 * c1[0] + 3 * c2[0] + b[0]) / 8, (a[1] + 3 * c1[1] + 3 * c2[1] + b[1]) / 8];
+  return { d: "M" + a.join(" ") + " C" + c1.join(" ") + " " + c2.join(" ") + " " + b.join(" "), mid };
+}
+function ortho(a, b, fs, ts, via, at) {
+  // Orthogonal route: exit along fs, elbow(s), arrive along ts. `via` forces the elbow coordinate.
+  const pts = [a];
+  const hv = s => s === "l" || s === "r";
+  if (hv(fs) && hv(ts)) {
+    if (Math.abs(a[1] - b[1]) < 1) { pts.push(b); }
+    else { const mx = via != null ? via : fs === ts ? (fs === "r" ? Math.max(a[0], b[0]) + 40 : Math.min(a[0], b[0]) - 40) : (a[0] + b[0]) / 2; pts.push([mx, a[1]], [mx, b[1]], b); }
+  } else if (!hv(fs) && !hv(ts)) {
+    if (Math.abs(a[0] - b[0]) < 1) { pts.push(b); }
+    else { const my = via != null ? via : fs === ts ? (fs === "t" ? Math.min(a[1], b[1]) - 60 : Math.max(a[1], b[1]) + 60) : (a[1] + b[1]) / 2; pts.push([a[0], my], [b[0], my], b); }
+  } else if (hv(fs)) {
+    if (via != null) pts.push([via, a[1]], [via, b[1]], b); else pts.push([b[0], a[1]], b);
+  } else {
+    if (via != null) pts.push([a[0], via], [b[0], via], b); else pts.push([a[0], b[1]], b);
+  }
+  const d = "M" + pts.map(p => p.join(" ")).join(" L");
+  let best = 0, mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  const t = at == null ? 0.5 : at;
+  for (let i = 0; i < pts.length - 1; i++) { const len = Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]); if (len > best) { best = len; mid = [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * t, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t]; } }
+  return { d, mid };
+}
+function bbox(list) {
+  const x0 = Math.min(...list.map(n => n.x)), y0 = Math.min(...list.map(n => n.y)), x1 = Math.max(...list.map(n => n.x + n.w)), y1 = Math.max(...list.map(n => n.y + n.h));
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+
+class Component extends DCLogic {
+  state = { tour: null, tourSpot: null, tourCard: { x: 0, y: 0 }, view: "todo", sel: null, panelOpen: false, scale: 0.25, tx: 0, ty: 0, dragging: false, vw: 1200, vh: 600, q: "", searchOpen: false, legendOpen: true, glossaryOpen: false };
+  vpRef = React.createRef(); panelRef = React.createRef(); glossRef = React.createRef(); tourRef = React.createRef();
+  componentDidMount() {
+    const el = this.vpRef.current; if (!el) return;
+    this.measure(() => { this.fitAll(); let done = false; try { done = localStorage.getItem("kofmapa_tour_done") === "1"; } catch (e) {} if (!done) setTimeout(() => this.goTour(0), 700); });
+    this.onResize = () => { if (this.state.tour != null) this.measureTour(); }; window.addEventListener("resize", this.onResize);
+    this.ro = new ResizeObserver(() => this.measure());
+    this.ro.observe(el);
+    this.wheel = e => { e.preventDefault(); const r = el.getBoundingClientRect(); this.zoomAt(this.state.scale * (e.deltaY < 0 ? 1.12 : 1 / 1.12), e.clientX - r.left, e.clientY - r.top); };
+    el.addEventListener("wheel", this.wheel, { passive: false });
+    this.onDocClick = e => { if (this.state.searchOpen && !e.target.closest("[role=listbox]") && !e.target.closest("label")) this.setState({ searchOpen: false }); };
+    document.addEventListener("pointerdown", this.onDocClick);
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this.onResize); if (this.ro) this.ro.disconnect(); const el = this.vpRef.current; if (el) el.removeEventListener("wheel", this.wheel); document.removeEventListener("pointerdown", this.onDocClick); }
+  measure(cb) { const el = this.vpRef.current; if (!el) return; const r = el.getBoundingClientRect(); this.setState({ vw: r.width, vh: r.height }, cb); }
+  visibleW() { return this.state.vw - (this.state.panelOpen ? PANEL_W : 0); }
+  fitBox(b, pad, maxS) {
+    const vw = this.visibleW(), vh = this.state.vh;
+    const s = clamp(Math.min((vw - pad * 2) / b.w, (vh - pad * 2) / b.h), 0.12, maxS);
+    this.setState({ scale: s, tx: (vw - b.w * s) / 2 - b.x * s, ty: (vh - b.h * s) / 2 - b.y * s });
+  }
+  fitAll = () => this.fitBox(bbox(NODES), 36, 1);
+  fitStation = id => this.fitBox(bbox(NODES.filter(n => n.st === id)), 90, 0.95);
+  zoomAt(ns, px, py) { const { scale, tx, ty } = this.state; ns = clamp(ns, 0.12, 1.8); this.setState({ scale: ns, tx: px - (px - tx) * ns / scale, ty: py - (py - ty) * ns / scale }); }
+  zoomCenter(f) { this.zoomAt(this.state.scale * f, this.visibleW() / 2, this.state.vh / 2); }
+  centerOn(id, open) {
+    const n = NODE[id]; const s = Math.max(this.state.scale, 0.8); const panel = open || this.state.panelOpen;
+    const vw = this.state.vw - (panel ? PANEL_W : 0);
+    this.setState({ scale: s, tx: vw / 2 - (n.x + n.w / 2) * s, ty: this.state.vh / 2 - (n.y + n.h / 2) * s });
+  }
+  openNode(id, fromKeyboard) {
+    this.lastNode = id;
+    this.setState({ sel: id, panelOpen: true, searchOpen: false }, () => { if (fromKeyboard && this.panelRef.current) this.panelRef.current.focus(); });
+  }
+  focusNode(id) { this.openNode(id); this.centerOn(id, true); }
+  closePanel = () => {
+    this.setState({ panelOpen: false }, () => { const b = document.querySelector('[data-node-id="' + this.lastNode + '"]'); if (b) b.focus(); });
+  };
+  onDown = e => {
+    if (e.button !== 0) return;
+    const st = { x: e.clientX, y: e.clientY, tx: this.state.tx, ty: this.state.ty, moved: false };
+    const move = ev => {
+      const dx = ev.clientX - st.x, dy = ev.clientY - st.y;
+      if (!st.moved && Math.hypot(dx, dy) > 4) { st.moved = true; this.setState({ dragging: true }); }
+      if (st.moved) this.setState({ tx: st.tx + dx, ty: st.ty + dy });
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up);
+      if (st.moved) { this.suppress = true; setTimeout(() => { this.suppress = false; }, 0); }
+      this.setState({ dragging: false });
+    };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+  };
+  onCanvasKey = e => {
+    if (e.target.tagName === "INPUT") return;
+    const step = 90; const m = { ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] }[e.key];
+    if (m) { e.preventDefault(); this.setState(s => ({ tx: s.tx + m[0], ty: s.ty + m[1] })); }
+    else if (e.key === "+" || e.key === "=") { e.preventDefault(); this.zoomCenter(1.2); }
+    else if (e.key === "-") { e.preventDefault(); this.zoomCenter(1 / 1.2); }
+  };
+  onRootKey = e => {
+    if (e.key === "Escape") {
+      if (this.state.glossaryOpen) this.setState({ glossaryOpen: false });
+      else if (this.state.searchOpen) this.setState({ searchOpen: false });
+      else if (this.state.panelOpen) this.closePanel();
+    }
+  };
+  goTour(i) {
+    if (i < 0 || i >= TOUR.length) return this.endTour();
+    const step = TOUR[i];
+    if (step.target === "[data-tour=filtro]") this.setState({ view: "coordinador" });
+    if (step.target === "[data-node-id=p1]") { this.setState({ view: "coordinador", panelOpen: false }); this.centerOn("p1", false); }
+    if (step.target === "[data-tour=panel]") { this.openNode("p1"); this.centerOn("p1", true); }
+    if (step.target === "[data-tour=zoom]") { this.setState({ panelOpen: false, view: "todo" }, () => this.fitAll()); }
+    if (step.target === "[data-tour=leyenda]") this.setState({ legendOpen: true });
+    this.setState({ tour: i, tourSpot: null }, () => { const f = () => { this.measureTour(); if (this.tourRef.current && !this.tourRef.current.contains(document.activeElement)) this.tourRef.current.focus(); }; setTimeout(f, 60); setTimeout(f, 420); setTimeout(f, 900); });
+  }
+  measureTour() {
+    const i = this.state.tour; if (i == null) return;
+    const step = TOUR[i]; const el = step.target ? document.querySelector(step.target) : null;
+    const vw = window.innerWidth, vh = window.innerHeight, W = 380, H = 300;
+    if (!el) { this.setState({ tourSpot: null, tourCard: { x: Math.max(12, (vw - W) / 2), y: Math.max(12, (vh - H) / 2) } }); return; }
+    const r = el.getBoundingClientRect(); const pad = 8;
+    const spot = { x: r.left - pad, y: r.top - pad, w: r.width + pad * 2, h: r.height + pad * 2 };
+    let x, y;
+    if (step.place === "left") { x = spot.x - 16 - W; y = Math.max(12, Math.min(vh - H - 12, spot.y + 60)); }
+    else { x = Math.max(12, Math.min(vw - W - 12, spot.x + spot.w / 2 - W / 2)); y = spot.y + spot.h + 16; if (y + H > vh - 12) y = Math.max(12, spot.y - 16 - H); }
+    this.setState({ tourSpot: spot, tourCard: { x, y } });
+  }
+  endTour = () => { try { localStorage.setItem("kofmapa_tour_done", "1"); } catch (e) {} this.setState({ tour: null, tourSpot: null }); };
+  onTourKey = e => {
+    if (e.key === "Escape") { e.stopPropagation(); this.endTour(); }
+    else if (e.key === "ArrowRight" || e.key === "Enter") { e.preventDefault(); e.stopPropagation(); this.goTour(this.state.tour + 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); e.stopPropagation(); this.goTour(this.state.tour - 1); }
+  };
+  searchResults() {
+    const q = this.state.q.trim().toLowerCase(); if (q.length < 2) return [];
+    const out = [];
+    NODES.forEach(n => {
+      const doc = (n.docs || []).find(d => d[0].toLowerCase().includes(q));
+      const inTitle = (n.title + " " + n.label + " " + (n.tag || "")).toLowerCase().includes(q);
+      const inKw = (n.keywords || "").toLowerCase().includes(q);
+      if (inTitle) out.push({ n, why: n.tag ? n.tag : "Paso del proceso", icon: "account_tree" });
+      else if (doc) out.push({ n, why: "Documento: " + doc[0], icon: "description" });
+      else if (inKw) out.push({ n, why: "Criterio de validación", icon: "fact_check" });
+    });
+    return out;
+  }
+  renderVals() {
+    const st = this.state;
+    const correo = this.props.contactoCorreo ?? "terceros@entersys.mx";
+    const whatsapp = this.props.contactoWhatsapp ?? "+52 55 1234 5678";
+    const fecha = this.props.fechaRevision ?? "septiembre de 2026";
+    const urlPortal = this.props.urlPortalContratistas ?? "https://wiki.entersys.mx/es/kof/terceros/kof";
+    const bundled = typeof window !== "undefined" && !!window.__resources;
+    const urlProcedimientos = bundled ? (this.props.urlProcedimientosPublica || "#") : (this.props.urlProcedimientos ?? "Procedimientos KOF.dc.html");
+    const showLoops = this.props.mostrarCiclosRechazo ?? true;
+    const grid = this.props.mostrarReticula ?? true;
+    const results = this.searchResults();
+    const hits = new Set(results.map(r => r.n.id));
+    const matches = n => st.view === "todo" || n.actors.includes(st.view);
+    const sel = st.sel ? NODE[st.sel] : null;
+    const stName = id => STATIONS.find(s => s.id === id).short;
+    const nodes = NODES.map(n => {
+      const a = ACTORS[n.actor], on = matches(n), isSel = st.panelOpen && st.sel === n.id;
+      return {
+        id: n.id, x: n.x, y: n.y, label: n.label, tag: n.tag || "", isDecision: n.actor === "decision", isCard: n.actor !== "decision",
+        bg: a.bg, border: a.border, borderStyle: a.borderStyle, chipBg: a.chipBg, chipFg: a.chipFg, chip: a.chip, icon: a.icon,
+        eyebrow: n.tag && n.tag !== a.label && n.tag !== a.short ? n.tag : a.short, sub: n.tag && n.tag !== a.label && n.tag !== a.short ? a.short : "",
+        interviene: !!n.interviene, hit: hits.has(n.id), sel: isSel, op: on ? 1 : 0.32,
+        shadow: isSel ? "0 0 0 3px #1c2838, 0 8px 20px rgba(28,40,56,0.22)" : hits.has(n.id) ? "0 0 0 3px #c2a56d" : "0 1px 3px rgba(28,40,56,0.08)",
+        filter: isSel ? "drop-shadow(0 0 0 #1c2838)" : "none",
+        aria: (n.tag ? n.tag + ": " : "") + n.title + ". " + a.label + (n.interviene ? ". Interviene el Coordinador" : "") + ". Abrir detalle",
+        open: () => { if (this.suppress) return; this.openNode(n.id, false); }
+      };
+    });
+    const edges = EDGES.map(e => {
+      const A = NODE[e.from], B = NODE[e.to];
+      const cross = e.type === "cross", fuera = e.type === "fuera";
+      const { d, mid } = ortho(anchor(A, e.fs), anchor(B, e.ts), e.fs, e.ts, e.via, e.at);
+      const on = matches(A) && matches(B);
+      return { d, op: on ? 1 : 0.28, stroke: cross ? "#009ca6" : fuera ? "#a7b1b6" : "#7c878e", sw: cross ? 2.5 : 2, dash: cross ? "8 5" : fuera ? "4 5" : "none",
+        marker: cross ? "#arw-teal" : fuera ? "#arw-light" : "#arw-slate", hasLabel: !!e.label, label: e.label, lx: mid[0], ly: mid[1] - 8, fs: "13px", lfill: cross ? "#00646b" : "#454d52",
+        shift: "translate(-50%,-100%)" };
+    });
+    if (showLoops) NODES.filter(n => n.rechazo).forEach(n => {
+      const x0 = n.x + n.w - 44, x1 = n.x + 44, y = n.y;
+      edges.push({ d: "M" + x0 + " " + y + " L" + x0 + " " + (y - 40) + " L" + x1 + " " + (y - 40) + " L" + x1 + " " + (y + 1), op: matches(n) ? 1 : 0.28, stroke: "#7c878e", sw: 1.5, dash: "3 3", marker: "#arw-slate",
+        hasLabel: true, label: "rechazo → corrección → reenvío", lx: n.x + n.w / 2, ly: y - 40, fs: "10.5px", lfill: "#5f696f", shift: "translate(-50%,-50%)" });
+    });
+    const bands = STATIONS.map(s => { const b = bbox(NODES.filter(n => n.st === s.id)); return { x: b.x - 30, y: b.y - 30, w: b.w + 60, h: b.h + 108, label: s.label, n: s.n, hasN: s.n > 0, noN: !(s.n > 0), note: s.note || "" }; });
+    const cx = (this.visibleW() / 2 - st.tx) / st.scale, cy = (st.vh / 2 - st.ty) / st.scale;
+    let active = bands.find(b => cx >= b.x && cx <= b.x + b.w && cy >= b.y && cy <= b.y + b.h);
+    if (!active) active = bands.reduce((best, b) => { const d = Math.hypot(b.x + b.w / 2 - cx, b.y + b.h / 2 - cy); return !best || d < best.d ? { b, d } : best; }, null).b;
+    const stations = STATIONS.map(s => { const a = active && active.label === s.label; return { n: s.n, hasN: s.n > 0, noN: !(s.n > 0), label: s.short, full: s.n > 0 ? s.n + ". " + s.label : s.label, ariaCurrent: a ? "location" : undefined, bg: a ? "#1c2838" : "#ffffff", fg: a ? "#ffffff" : "#454d52", border: a ? "#1c2838" : "#cdd4d7", numBg: a ? "#009ca6" : "#f1f3f4", numFg: a ? "#ffffff" : "#454d52", go: () => this.fitStation(s.id) }; });
+    const views = VIEWS.map(v => { const p = st.view === v.id; return { label: v.label, icon: v.icon, hasIcon: v.id === "coordinador", pressed: p, bg: p ? "#1c2838" : "#ffffff", fg: p ? "#ffffff" : "#454d52", pick: () => this.setState({ view: v.id }) }; });
+    const idx = sel ? NODES.indexOf(sel) : -1;
+    const conn = list => list.map(id => ({ label: (NODE[id].tag ? NODE[id].tag + " · " : "") + NODE[id].label, go: () => this.focusNode(id) }));
+    const deps = sel ? EDGES.filter(e => e.to === sel.id && !(e.from === "d_intentos" && e.to === "modulos")).map(e => e.from) : [];
+    const outs = sel ? EDGES.filter(e => e.from === sel.id).map(e => e.to) : [];
+    const res = sel ? (RECURSOS[sel.id] || []).map(r => ({ avail: r.status === "disponible", prep: r.status !== "disponible", isPdf: r.type === "pdf", isVideo: r.type === "video", icon: r.type === "pdf" ? "picture_as_pdf" : "smart_display",
+      title: r.title, url: r.url || "", thumb: r.thumb || "", meta: r.status === "disponible" ? (r.type === "video" ? "Video tutorial · YouTube · pestaña nueva" : "Manual PDF · Google Drive · pestaña nueva") : (r.type === "video" ? "Video tutorial" : "Manual PDF") })) : [];
+    const sa = sel ? ACTORS[sel.actor] : ACTORS.contratista;
+    return {
+      vpRef: this.vpRef, panelRef: this.panelRef, glossRef: this.glossRef,
+      tx: st.tx, ty: st.ty, scale: st.scale, cursor: st.dragging ? "grabbing" : "grab",
+      transition: st.dragging ? "none" : "transform .28s cubic-bezier(.4,0,.2,1)",
+      gridImage: grid ? "radial-gradient(circle, #cdd4d7 1px, transparent 1.2px)" : "none",
+      nodes, edges, bands, stations, views, isCoordView: st.view === "coordinador",
+      zoomPct: Math.round(st.scale * 100) + " %", zoomIn: () => this.zoomCenter(1.25), zoomOut: () => this.zoomCenter(1 / 1.25), zoomReset: () => this.zoomAt(1, this.visibleW() / 2, st.vh / 2), fitAll: this.fitAll,
+      zoomRight: st.panelOpen ? (PANEL_W + 16) + "px" : "16px",
+      onDown: this.onDown, onCanvasKey: this.onCanvasKey, onRootKey: this.onRootKey,
+      q: st.q, hasQ: st.q.length > 0, setQ: e => this.setState({ q: e.target.value, searchOpen: true }), clearQ: () => this.setState({ q: "", searchOpen: false }), openSearch: () => this.setState({ searchOpen: true }),
+      onSearchKey: e => { if (e.key === "Enter" && results.length) { this.focusNode(results[0].n.id); } if (e.key === "Escape") this.setState({ searchOpen: false }); },
+      showResults: st.searchOpen && st.q.trim().length >= 2, noResults: results.length === 0,
+      results: results.map(r => ({ title: (r.n.tag ? r.n.tag + " · " : "") + r.n.title, why: r.why, icon: r.icon, station: stName(r.n.st), pick: () => { this.setState({ q: st.q }); this.focusNode(r.n.id); } })),
+      legendOpen: st.legendOpen, legendWidth: st.legendOpen ? "auto" : "136px", legendChevron: st.legendOpen ? "expand_more" : "expand_less", toggleLegend: () => this.setState(s => ({ legendOpen: !s.legendOpen })),
+      legendActors: ["contratista", "coordinador", "sistema", "resultado", "fuera"].map(k => ({ label: ACTORS[k].label, icon: ACTORS[k].icon, bg: ACTORS[k].bg, border: ACTORS[k].border, borderStyle: ACTORS[k].borderStyle })),
+      glossaryOpen: st.glossaryOpen, glossary: GLOSSARY.map(g => ({ term: g[0], def: g[1] })),
+      openGlossary: () => this.setState({ glossaryOpen: true }, () => this.glossRef.current && this.glossRef.current.focus()), closeGlossary: () => this.setState({ glossaryOpen: false }), stop: e => e.stopPropagation(),
+      panelOpen: st.panelOpen, closePanel: this.closePanel,
+      selStation: sel ? stName(sel.st) : "", selActor: sel ? sa.label : "", selIcon: sa.icon, selChipBg: sa.chipBg, selChipFg: sa.chipFg,
+      selInterviene: !!(sel && sel.interviene), selTag: sel ? (sel.tag || "") : "", selTitle: sel ? sel.title : "", selBody: sel ? sel.body : "",
+      selIsCredStation: !!(sel && sel.id.indexOf("cred") === 0), selIsCredSample: !!(sel && sel.sample),
+      selEjecuta: sel ? sel.ejecuta : "", selValida: sel ? sel.valida : "", selRevisas: sel ? (sel.revisas || "") : "",
+      selHasDocs: !!(sel && sel.docs), selDocsCol2: sel ? (sel.docsCol2 || "Nota") : "", selDocs: sel && sel.docs ? sel.docs.map(d => ({ name: d[0], note: d[1] })) : [],
+      selRechazo: sel ? (sel.rechazo || "") : "",
+      selDeps: conn(deps), selOuts: conn(outs), selNoDeps: deps.length === 0, selNoOuts: outs.length === 0,
+      selRes: res, selHasRes: res.length > 0, selNoRes: res.length === 0,
+      hasPrev: idx > 0, hasNext: idx >= 0 && idx < NODES.length - 1,
+      prevLabel: idx > 0 ? NODES[idx - 1].label : "", nextLabel: idx >= 0 && idx < NODES.length - 1 ? NODES[idx + 1].label : "",
+      goPrev: () => idx > 0 && this.focusNode(NODES[idx - 1].id), goNext: () => idx < NODES.length - 1 && this.focusNode(NODES[idx + 1].id),
+      tourOn: st.tour != null, tourRef: this.tourRef, startTour: () => this.goTour(0), endTour: this.endTour, onTourKey: this.onTourKey,
+      tourHasTarget: !!st.tourSpot, tourNoTarget: !st.tourSpot, tourSpotX: (st.tourSpot || {}).x || 0, tourSpotY: (st.tourSpot || {}).y || 0, tourSpotW: (st.tourSpot || {}).w || 0, tourSpotH: (st.tourSpot || {}).h || 0, tourCardX: st.tourCard.x, tourCardY: st.tourCard.y,
+      tourIcon: st.tour != null ? TOUR[st.tour].icon : "", tourTitle: st.tour != null ? TOUR[st.tour].title : "", tourText: st.tour != null ? TOUR[st.tour].text : "",
+      tourCount: st.tour != null ? (st.tour + 1) + " de " + TOUR.length : "", tourHasPrev: st.tour > 0,
+      tourNextLabel: st.tour === TOUR.length - 1 ? "Ir al mapa" : st.tour === 0 ? "Comenzar" : "Siguiente", tourNextIcon: st.tour === TOUR.length - 1 ? "check" : "arrow_forward",
+      tourNext: () => this.goTour(st.tour + 1), tourPrev: () => this.goTour(st.tour - 1),
+      tourDots: TOUR.map((_, i) => ({ w: i === st.tour ? 22 : 6, bg: i === st.tour ? "#009ca6" : i < st.tour ? "#7fccd1" : "#e2e6e8" })),
+      correo, whatsapp, fecha, urlPortal, goProcedimientos: () => { if (urlProcedimientos && urlProcedimientos !== "#") window.location.href = urlProcedimientos; }, waLink: "https://wa.me/" + whatsapp.replace(/[^0-9]/g, "")
+    };
+  }
+}
+</script>
+</body>
+</html>

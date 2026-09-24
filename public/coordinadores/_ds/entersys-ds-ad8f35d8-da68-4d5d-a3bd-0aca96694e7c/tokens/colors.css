@@ -1,0 +1,92 @@
+/* Entersys — Color tokens
+   Derived from "Lineamientos de color Entersys".
+   Rule of thirds: ~60% dominant · ~30% structural · ~10% accent.
+   Never abuse accents — use only to direct attention. */
+
+:root {
+  /* ---- Brand core palette ---- */
+  --ent-teal:            #009ca6; /* Turquesa vivo — primary accent: buttons, icons, highlights */
+  --ent-teal-deep:       #093d53; /* Turquesa opaco — fresh/innovative dominant background */
+  --ent-navy:            #1c2838; /* Azul oscuro — institutional dominant background */
+  --ent-gold:            #c2a56d; /* Oro opaco — value, achievements, key figures */
+  --ent-slate:           #7c878e; /* Gris azulado — structural secondary, text blocks, dividers */
+  --ent-paper:           #fafafa; /* Blanco — classic light dominant background */
+
+  /* ---- Teal ramp ---- */
+  --ent-teal-50:  #e6f5f6;
+  --ent-teal-100: #b9e3e6;
+  --ent-teal-200: #7fccd1;
+  --ent-teal-300: #45b4bb;
+  --ent-teal-400: #1aa4ac;
+  --ent-teal-500: #009ca6; /* base */
+  --ent-teal-600: #008089;
+  --ent-teal-700: #00646b;
+  --ent-teal-800: #004a50;
+
+  /* ---- Navy / deep ramp ---- */
+  --ent-navy-900: #131c28;
+  --ent-navy-800: #1c2838; /* base institutional */
+  --ent-navy-700: #26374b;
+  --ent-navy-600: #093d53; /* deep turquoise */
+  --ent-navy-500: #16506a;
+
+  /* ---- Neutral ramp (blue-grey) ---- */
+  --ent-neutral-0:   #ffffff;
+  --ent-neutral-50:  #fafafa;
+  --ent-neutral-100: #f1f3f4;
+  --ent-neutral-200: #e2e6e8;
+  --ent-neutral-300: #cdd4d7;
+  --ent-neutral-400: #a7b1b6;
+  --ent-neutral-500: #7c878e; /* base slate */
+  --ent-neutral-600: #5f696f;
+  --ent-neutral-700: #454d52;
+  --ent-neutral-800: #2e3438;
+  --ent-neutral-900: #1a1e21;
+
+  /* ---- Gold ramp ---- */
+  --ent-gold-100: #f2ead9;
+  --ent-gold-300: #dcc9a1;
+  --ent-gold-500: #c2a56d; /* base */
+  --ent-gold-700: #a4863f;
+
+  /* ---- Semantic status ---- */
+  --ent-success: #2f9e6f;
+  --ent-warning: #d69b2f;
+  --ent-danger:  #c8503f;
+  --ent-info:    #009ca6;
+
+  /* ================= Semantic aliases ================= */
+  /* Surfaces */
+  --surface-page:        var(--ent-neutral-50);
+  --surface-card:        var(--ent-neutral-0);
+  --surface-muted:       var(--ent-neutral-100);
+  --surface-inverse:     var(--ent-navy-800);
+  --surface-inverse-alt: var(--ent-navy-600);
+  --surface-brand:       var(--ent-teal-500);
+
+  /* Text */
+  --text-strong:   var(--ent-navy-800);
+  --text-body:     var(--ent-neutral-700);
+  --text-muted:    var(--ent-neutral-500);
+  --text-on-dark:  var(--ent-neutral-50);
+  --text-on-brand: #ffffff;
+  --text-accent:   var(--ent-teal-600);
+  --text-value:    var(--ent-gold-700);
+
+  /* Borders & lines */
+  --border-subtle:  var(--ent-neutral-200);
+  --border-default: var(--ent-neutral-300);
+  --border-strong:  var(--ent-neutral-400);
+  --border-brand:   var(--ent-teal-500);
+
+  /* Interactive */
+  --action-bg:         var(--ent-teal-500);
+  --action-bg-hover:   var(--ent-teal-600);
+  --action-bg-active:  var(--ent-teal-700);
+  --action-text:       #ffffff;
+  --focus-ring:        var(--ent-teal-300);
+
+  /* Link colors */
+  --link-color:       var(--ent-teal-600);
+  --link-color-hover: var(--ent-teal-700);
+}

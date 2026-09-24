@@ -61,6 +61,17 @@ export default function Header({ onGoHome, q, onQ, onGoFaq, onGoIntro }) {
               <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 17 }}>quiz</span>
               FAQ
             </button>
+
+            <a
+              href="/coordinadores/mapa.html"
+              className="header-nav-btn"
+              style={{ textDecoration: 'none' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#f1f3f4'; e.currentTarget.style.color = '#1c2838'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#5f696f'; }}
+            >
+              <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 17 }}>account_tree</span>
+              Coordinadores
+            </a>
           </nav>
 
           <button
