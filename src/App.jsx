@@ -25,7 +25,7 @@ function loadDocs() {
 
 function getViewFromPath() {
   const p = window.location.pathname;
-  if (p === '/coordinadores/mapa.html' || p === '/coordinadores/mapa') return 'mapa';
+  if (p === '/coordinadores/mapa' || p === '/coordinadores/mapa') return 'mapa';
   return 'home';
 }
 
@@ -75,7 +75,7 @@ export default function App() {
   }
 
   function goMapa() {
-    window.history.pushState({}, '', '/coordinadores/mapa.html');
+    window.history.pushState({}, '', '/coordinadores/mapa');
     setView('mapa');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
