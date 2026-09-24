@@ -445,6 +445,17 @@ function DesktopCanvas({ onGoHome, onGoProcedimientos }) {
     return () => { ro.disconnect(); el.removeEventListener('wheel', wheel); };
   }, []);
 
+  // Al cerrar el tutorial, regresar a Onboarding (s1)
+  useEffect(() => {
+    if (tourPhase === 'none') {
+      const b = bbox(NODES.filter(n => n.st === 's1'));
+      setState(prev => {
+        const s = clamp(Math.min((prev.vw - 90) / b.w, (prev.vh - 90) / b.h), 0.12, 0.95);
+        return { ...prev, view: 'todo', panelOpen: false, scale: s, tx: (prev.vw - b.w * s) / 2 - b.x * s, ty: (prev.vh - b.h * s) / 2 - b.y * s };
+      });
+    }
+  }, [tourPhase]);
+
   const onDown = e => {
     if (e.button !== 0) return;
     const st0 = { x: e.clientX, y: e.clientY, tx: state.tx, ty: state.ty, moved: false };
