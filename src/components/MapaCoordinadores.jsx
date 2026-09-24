@@ -526,7 +526,7 @@ function DesktopCanvas({ onGoHome, onGoProcedimientos }) {
           </button>
           <span style={{ width: 1, height: 24, background: '#e2e6e8' }} />
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            <span style={{ fontFamily: "'Titillium Web', sans-serif", fontWeight: 600, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7c878e' }}>Portal KOF · Acceso especial</span>
+            <span style={{ fontFamily: "'Titillium Web', sans-serif", fontWeight: 600, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7c878e' }}>Portal KOF · Coordinadores de Seguridad</span>
             <span style={{ fontFamily: "'Titillium Web', sans-serif", fontWeight: 700, fontSize: 15, color: '#1c2838', whiteSpace: 'nowrap' }}>Mapa del proceso para Coordinadores de Seguridad</span>
           </div>
           <span style={{ flex: 1 }} />

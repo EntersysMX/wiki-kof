@@ -216,5 +216,65 @@ button { font-family: inherit; cursor: pointer; }
   .header-ayuda-fab { display: flex; }
 }
 
+/* ── ProcedimientosKOF: nav links del header ─────────────── */
+.proc-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #008089;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+}
+
+/* ── ProcedimientosKOF: FABs ─────────────────────────────── */
+.proc-fabs {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 16px;
+  z-index: 100;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.proc-fab {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: #009ca6 !important;
+  color: #ffffff !important;
+  border-radius: 16px;
+  padding: 12px 16px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 16px rgba(0, 100, 107, 0.35);
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+.proc-fab:hover {
+  background: #008089 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+@media (max-width: 1023px) {
+  .proc-nav-link { display: none !important; }
+  .proc-fabs { display: flex; }
+}
+
 /* v2 */
 :root{--build:4;}
