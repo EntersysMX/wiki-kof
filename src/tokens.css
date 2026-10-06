@@ -174,13 +174,21 @@ button { font-family: inherit; cursor: pointer; }
   text-decoration: none;
 }
 
-/* ── Ayuda FAB ───────────────────────────────────────────── */
-.header-ayuda-fab {
+/* ── FABs móvil (contenedor) ─────────────────────────────── */
+.header-fabs-mobile {
   display: none;
   position: fixed;
   bottom: 20px;
   right: 16px;
   z-index: 100;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* ── Ayuda FAB ───────────────────────────────────────────── */
+.header-ayuda-fab {
+  display: flex;
   align-items: center;
   gap: 6px;
   background: #009ca6;
@@ -201,6 +209,33 @@ button { font-family: inherit; cursor: pointer; }
   transform: translateY(-2px);
 }
 
+/* ── FAQ FAB ─────────────────────────────────────────────── */
+.header-faq-fab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1c2838;
+  color: #ffffff;
+  font-weight: 700;
+  font-family: 'Titillium Web', sans-serif;
+  border: none;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(28, 40, 56, 0.3);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  animation: faq-pulse 2.5s ease-in-out infinite;
+}
+.header-faq-fab:hover {
+  background: #26374b;
+  box-shadow: 0 6px 20px rgba(28, 40, 56, 0.4);
+  transform: translateY(-2px);
+}
+@keyframes faq-pulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(28, 40, 56, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(0, 156, 166, 0.5); }
+}
+
 /* ── Responsive: tablet y móvil (≤ 768px) ───────────────── */
 @media (max-width: 768px) {
   .header-portal-name {
@@ -213,7 +248,7 @@ button { font-family: inherit; cursor: pointer; }
 
   .header-nav { display: none !important; }
 
-  .header-ayuda-fab { display: flex; }
+  .header-fabs-mobile { display: flex; }
 }
 
 /* ── ProcedimientosKOF: nav links del header ─────────────── */

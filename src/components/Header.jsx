@@ -58,8 +58,8 @@ export default function Header({ onGoHome, q, onQ, onGoFaq, onGoIntro, onGoMapa 
               onMouseEnter={e => { e.currentTarget.style.background = '#f1f3f4'; e.currentTarget.style.color = '#1c2838'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#5f696f'; }}
             >
-              <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 17 }}>quiz</span>
-              FAQ
+              <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 17 }}>help</span>
+              Preguntas frecuentes
             </button>
 
             <button
@@ -127,15 +127,25 @@ export default function Header({ onGoHome, q, onQ, onGoFaq, onGoIntro, onGoMapa 
         )}
       </header>
 
-      {/* Ayuda FAB — solo en móvil y tablet */}
-      <a
-        href="#ayuda"
-        className="header-ayuda-fab"
-        aria-label="Ir a la sección de ayuda"
-      >
-        <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 24 }}>support_agent</span>
-        <span style={{ fontSize: 13, fontWeight: 700 }}>Ayuda</span>
-      </a>
+      {/* FABs móvil — solo en móvil y tablet */}
+      <div className="header-fabs-mobile">
+        <button
+          onClick={onGoFaq}
+          className="header-faq-fab"
+          aria-label="Preguntas frecuentes"
+        >
+          <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 22 }}>help</span>
+          <span style={{ fontSize: 12, fontWeight: 700 }}>FAQ</span>
+        </button>
+        <a
+          href="#ayuda"
+          className="header-ayuda-fab"
+          aria-label="Ir a la sección de ayuda"
+        >
+          <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 24 }}>support_agent</span>
+          <span style={{ fontSize: 13, fontWeight: 700 }}>Ayuda</span>
+        </a>
+      </div>
     </>
   );
 }
