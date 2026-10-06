@@ -80,7 +80,7 @@ export default function HelpSection() {
 
           {/* Platform link */}
           <a
-            href="https://kof.entersys.mx"
+            href="https://entersys.mx/Gestion_Contratistas.html"
             target="_blank"
             rel="noopener noreferrer"
             style={{
