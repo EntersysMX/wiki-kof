@@ -129,14 +129,6 @@ export default function Header({ onGoHome, q, onQ, onGoFaq, onGoIntro, onGoMapa 
 
       {/* FABs móvil — solo en móvil y tablet */}
       <div className="header-fabs-mobile">
-        <button
-          onClick={onGoFaq}
-          className="header-faq-fab"
-          aria-label="Preguntas frecuentes"
-        >
-          <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 22 }}>help</span>
-          <span style={{ fontSize: 12, fontWeight: 700 }}>Preguntas frecuentes</span>
-        </button>
         <a
           href="#ayuda"
           className="header-ayuda-fab"
@@ -145,6 +137,14 @@ export default function Header({ onGoHome, q, onQ, onGoFaq, onGoIntro, onGoMapa 
           <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 24 }}>support_agent</span>
           <span style={{ fontSize: 13, fontWeight: 700 }}>Ayuda</span>
         </a>
+        <button
+          onClick={onGoFaq}
+          className="header-faq-fab"
+          aria-label="Preguntas frecuentes"
+        >
+          <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 22 }}>help</span>
+          <span style={{ fontSize: 12, fontWeight: 700 }}>Preguntas frecuentes</span>
+        </button>
       </div>
     </>
   );
