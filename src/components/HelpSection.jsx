@@ -42,7 +42,7 @@ export default function HelpSection() {
                 WhatsApp
               </span>
               <span style={{ display: 'block', fontSize: 13, color: '#5f696f', lineHeight: 1.5 }}>
-                +52 56 2568 3662 — Soporte directo con el equipo Entersys. Respuesta en horario laboral.
+                +52 56 2568 3662 — Atención directa con nuestro agente de ayuda para dirigirte a los módulos requeridos.
               </span>
             </span>
           </a>
@@ -74,6 +74,39 @@ export default function HelpSection() {
               </span>
               <span style={{ display: 'block', fontSize: 13, color: '#5f696f', lineHeight: 1.5 }}>
                 soportekof@entersys.mx — para reportes o consultas que requieran evidencia adjunta.
+              </span>
+            </span>
+          </a>
+
+          {/* Ticket de soporte */}
+          <a
+            href="https://app.smartsheet.com/b/form/823e0c2ea50044358ab576d5c74ba383"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex', alignItems: 'flex-start', gap: 14,
+              background: '#ffffff', border: '1px solid #e2e6e8',
+              borderRadius: 12, padding: 20, textDecoration: 'none',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = '#009ca6';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(28,40,56,0.08)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = '#e2e6e8';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            <span className="material-symbols-rounded" style={{ fontSize: 28, color: '#e65100', flexShrink: 0, marginTop: 2 }}>
+              confirmation_number
+            </span>
+            <span>
+              <span style={{ display: 'block', fontFamily: "'Titillium Web', sans-serif", fontWeight: 700, fontSize: 15, color: '#1c2838', marginBottom: 4 }}>
+                Levantar un ticket
+              </span>
+              <span style={{ display: 'block', fontSize: 13, color: '#5f696f', lineHeight: 1.5 }}>
+                Reporta un problema o solicita asistencia mediante nuestro formulario de soporte.
               </span>
             </span>
           </a>

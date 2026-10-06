@@ -12,7 +12,7 @@ import MapaCoordinadores from './components/MapaCoordinadores';
 import ProcedimientosKOF from './components/ProcedimientosKOF';
 import { STEPS } from './data/steps';
 
-const FECHA_REVISION = 'julio 2025';
+const FECHA_REVISION = 'octubre 2026';
 const LS_SEEN = 'kof_seen';
 const LS_DOCS = 'kof_docs';
 
