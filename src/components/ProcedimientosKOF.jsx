@@ -219,9 +219,9 @@ export default function ProcedimientosKOF({ onGoHome, onGoMapa }) {
               <h2 style={{ margin: '0 0 4px', fontFamily: "'Titillium Web', sans-serif", fontWeight: 700, fontSize: 19, color: '#ffffff' }}>¿Alguna duda?</h2>
               <p style={{ margin: '0 0 14px', fontSize: 14.5, lineHeight: 1.6, color: '#c9d2da' }}>Entersys acompaña el proceso. Se responde solamente en horario hábil.</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-                <a href="mailto:soporte@entersys.mx" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 8, padding: '10px 14px', minHeight: 44, boxSizing: 'border-box', color: '#ffffff', textDecoration: 'none', fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap' }}>
+                <a href="mailto:soportekof@entersys.mx" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 8, padding: '10px 14px', minHeight: 44, boxSizing: 'border-box', color: '#ffffff', textDecoration: 'none', fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap' }}>
                   <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 19, color: '#7fccd1' }}>mail</span>
-                  soporte@entersys.mx
+                  soportekof@entersys.mx
                 </a>
                 <a href="https://wa.me/5256258366" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 8, padding: '10px 14px', minHeight: 44, boxSizing: 'border-box', color: '#ffffff', textDecoration: 'none', fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap' }}>
                   <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 19, color: '#7fccd1' }}>chat</span>

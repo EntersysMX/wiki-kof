@@ -49,7 +49,7 @@ export default function HelpSection() {
 
           {/* Email */}
           <a
-            href="mailto:soporte@entersys.mx"
+            href="mailto:soportekof@entersys.mx"
             style={{
               display: 'flex', alignItems: 'flex-start', gap: 14,
               background: '#ffffff', border: '1px solid #e2e6e8',
@@ -73,7 +73,7 @@ export default function HelpSection() {
                 Correo electrónico
               </span>
               <span style={{ display: 'block', fontSize: 13, color: '#5f696f', lineHeight: 1.5 }}>
-                soporte@entersys.mx — para reportes o consultas que requieran evidencia adjunta.
+                soportekof@entersys.mx — para reportes o consultas que requieran evidencia adjunta.
               </span>
             </span>
           </a>

@@ -34,12 +34,12 @@ export default function Footer({ fechaRevision }) {
             entersys.mx
           </a>
           <a
-            href="mailto:soporte@entersys.mx"
+            href="mailto:soportekof@entersys.mx"
             style={{ color: '#8b98a5', textDecoration: 'none', transition: 'color 0.15s' }}
             onMouseEnter={e => e.currentTarget.style.color = '#c9d2da'}
             onMouseLeave={e => e.currentTarget.style.color = '#8b98a5'}
           >
-            soporte@entersys.mx
+            soportekof@entersys.mx
           </a>
         </div>
       </div>

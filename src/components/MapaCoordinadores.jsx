@@ -843,8 +843,8 @@ function DesktopCanvas({ onGoHome, onGoProcedimientos }) {
         <span className="material-symbols-rounded" style={{ fontSize: 22, color: '#7fccd1' }}>support_agent</span>
         <p style={{ margin: 0, fontSize: 13.5, color: '#ffffff' }}><strong style={{ fontFamily: "'Titillium Web', sans-serif" }}>¿Alguna duda?</strong> <span style={{ color: '#c9d2da' }}>Entersys acompaña el proceso. Solo en horario hábil.</span></p>
         <span style={{ flex: 1 }} />
-        <a href="mailto:soporte@entersys.mx" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 8, padding: '0 12px', height: 36, color: '#ffffff', textDecoration: 'none', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap' }}>
-          <span className="material-symbols-rounded" style={{ fontSize: 16, color: '#7fccd1' }}>mail</span>soporte@entersys.mx
+        <a href="mailto:soportekof@entersys.mx" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 8, padding: '0 12px', height: 36, color: '#ffffff', textDecoration: 'none', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap' }}>
+          <span className="material-symbols-rounded" style={{ fontSize: 16, color: '#7fccd1' }}>mail</span>soportekof@entersys.mx
         </a>
         <a href="https://wa.me/5256258366" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 8, padding: '0 12px', height: 36, color: '#ffffff', textDecoration: 'none', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap' }}>
           <span className="material-symbols-rounded" style={{ fontSize: 16, color: '#7fccd1' }}>chat</span>WA +52 56 2568 3662
