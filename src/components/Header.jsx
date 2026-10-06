@@ -135,7 +135,7 @@ export default function Header({ onGoHome, q, onQ, onGoFaq, onGoIntro, onGoMapa 
           aria-label="Preguntas frecuentes"
         >
           <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 22 }}>help</span>
-          <span style={{ fontSize: 12, fontWeight: 700 }}>FAQ</span>
+          <span style={{ fontSize: 12, fontWeight: 700 }}>Preguntas frecuentes</span>
         </button>
         <a
           href="#ayuda"
